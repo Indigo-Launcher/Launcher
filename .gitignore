@@ -1,0 +1,23 @@
+# dependencies
+node_modules
+.pnpm-store
+
+# build output
+dist
+out
+build
+
+# electron build
+release
+
+# environment
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
+npm-debug.log*

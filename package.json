@@ -1,0 +1,28 @@
+{
+  "name": "launcher",
+  "version": "1.0.0",
+  "private": true,
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ]
+  },
+  "scripts": {
+    "start:dev": "concurrently \"cross-env BROWSER=none npm start --prefix apps/ui\" \"npx wait-on http://127.0.0.1:5173 && cross-env DEV_UI_URL=http://localhost:5173 npm start -prefix apps/electron\""
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.29.2",
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.39.3",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
+    "wait-on": "^9.0.4"
+  }
+}
