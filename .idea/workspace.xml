@@ -1,51 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d460f51d-95ba-4623-8517-e9f094d73428" name="Changes" comment="chore: push UI changes">
-      <change afterPath="$PROJECT_DIR$/electron/forge.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/api/database.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/api/database.test.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/api/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/api/src/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/api/src/routes/healthz.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/api/src/structures/RouteHandler.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/api/src/structures/interfaces/Handler.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/electron/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/electron/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/electron/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/electron/src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/electron/src/preload.js" beforeDir="false" afterPath="$PROJECT_DIR$/electron/src/preload.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ui/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/eslint.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ui/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/next-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ui/next-env.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/public/vite.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ui/public/vite.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/assets/react.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/components/Layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/components/Layout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/components/Sidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/components/Sidebar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/components/TitleBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/components/TitleBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/lib/database.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/AccountLink.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/AccountLink.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Genres.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Genres.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Landing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Landing.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Library.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Library.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/auth/Login.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Quests.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Quests.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Settings.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Settings.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Signup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/auth/Signup.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Welcome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Welcome.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/src/stores/gameStore.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ui/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/vite.config.js" afterDir="false" />
+    <list default="true" id="d460f51d-95ba-4623-8517-e9f094d73428" name="Changes" comment="chore: Reset project and remove API&#10;&#10;Moved API to its own repository. Organised electron and ui.&#10;&#10;BREAKING!">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/electron/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/electron/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/api-types/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-workspace.yaml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +26,9 @@
     "accountId": "624e1503-31ef-4254-81bb-52725e1c4983"
   }
 }]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 3
 }]]></component>
@@ -111,7 +73,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1773949219475</updated>
-      <workItem from="1773949220495" duration="3728000" />
+      <workItem from="1773949220495" duration="4168000" />
     </task>
     <task id="LOCAL-00001" summary="chore: push UI changes">
       <option name="closed" value="true" />
@@ -121,7 +83,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773949637417</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="chore: Reset project and remove API&#10;&#10;Moved API to its own repository. Organised electron and ui.&#10;&#10;BREAKING!">
+      <option name="closed" value="true" />
+      <created>1773953334813</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1773953334813</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -129,6 +99,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="chore: push UI changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: push UI changes" />
+    <MESSAGE value="chore: Reset project and remove API&#10;&#10;Moved API to its own repository. Organised electron and ui.&#10;&#10;BREAKING!" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: Reset project and remove API&#10;&#10;Moved API to its own repository. Organised electron and ui.&#10;&#10;BREAKING!" />
   </component>
 </project>

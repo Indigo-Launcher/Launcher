@@ -9,8 +9,8 @@
     "make": "electron-forge make"
   },
   "contributors": [
-    "Noah Soppelsa (u2462115@unimail.hud.ac.uk)",
-    "Muhammad Zia (u2469973@unimail.hud.ac.uk)"
+    "Noah Soppelsa",
+    "Muhammad Zia"
   ],
   "repository": {
     "type": "git",
