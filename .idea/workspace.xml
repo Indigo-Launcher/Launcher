@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d460f51d-95ba-4623-8517-e9f094d73428" name="Changes" comment="chore: push UI changes">
+      <change afterPath="$PROJECT_DIR$/electron/forge.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api/database.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api/database.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api/src/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api/src/routes/healthz.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api/src/structures/RouteHandler.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api/src/structures/interfaces/Handler.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/electron/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/electron/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/electron/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/electron/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/electron/src/preload.js" beforeDir="false" afterPath="$PROJECT_DIR$/electron/src/preload.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ui/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/eslint.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ui/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/next-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ui/next-env.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/public/vite.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ui/public/vite.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/assets/react.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/components/Layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/components/Layout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/components/Sidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/components/Sidebar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/components/TitleBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/components/TitleBar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/lib/database.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/AccountLink.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/AccountLink.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Genres.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Genres.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Landing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Landing.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Library.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Library.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/auth/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Quests.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Quests.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Settings.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Settings.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Signup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/auth/Signup.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/pages/Welcome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/pages/Welcome.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/src/stores/gameStore.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ui/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/api-types/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-workspace.yaml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "pinkuth"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Indigo-Launcher/Launcher.git",
+    "accountId": "624e1503-31ef-4254-81bb-52725e1c4983"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="3BB4dtfIpzu6ZnhP4DwHjfuXACn" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "dev",
+    "javascript.preferred.runtime.type.id": "node",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.3.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\University of Huddersfield\CII2350-2526 - Team Project\Launcher" />
+      <recent name="D:\University of Huddersfield\CII2350-2526 - Team Project\Launcher\apps\ui\src\pages\auth" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-WS-253.31033.133" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d460f51d-95ba-4623-8517-e9f094d73428" name="Changes" comment="" />
+      <created>1773949219475</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1773949219475</updated>
+      <workItem from="1773949220495" duration="3728000" />
+    </task>
+    <task id="LOCAL-00001" summary="chore: push UI changes">
+      <option name="closed" value="true" />
+      <created>1773949637417</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1773949637417</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="chore: push UI changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: push UI changes" />
+  </component>
+</project>

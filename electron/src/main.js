@@ -1,9 +1,27 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-const path = require('path');
-const url = require("node:url");
+/**
+ * Copyright (c) 2026 Team Indigo
+ */
+'use strict';
 
-function createWindow() {
-  const win = new BrowserWindow({
+const path = require('node:path');
+const url = require("node:url");
+const {
+  BrowserWindow,
+  app,
+  ipcMain,
+  dialog
+} = require('electron');
+
+/**
+ * The main function to create the electron {@link BrowserWindow}.
+ *
+ * @since v0.0.1
+ */
+const createWindow = () => {
+  if (require('electron-squirrel-startup')) return;
+
+  // create the electronjs browser window
+  const window = new BrowserWindow({
     width: 1200,
     height: 800,
     frame: false,
@@ -15,41 +33,25 @@ function createWindow() {
   });
 
   // Window control handlers
-  ipcMain.on('window-minimize', () => {
-    win.minimize();
-  });
-
-  ipcMain.on('window-maximize', () => {
-    if (win.isMaximized()) {
-      win.unmaximize();
-    } else {
-      win.maximize();
-    }
-  });
-
-  ipcMain.on('window-close', () => {
-    win.close();
-  });
-
-    win.loadURL("http://localhost:5173").catch((reason) => {
-      dialog.showErrorBox("Something went wrong", reason.toString());
-    });
+  ipcMain.on('window-minimize', () => window.minimize());
+  ipcMain.on('window-maximize', () => window.isMaximized() ? window.maximize() : window.minimize());
+  ipcMain.on('window-close', () => window.close());
 
   // loads the vite dev server while we're in dev
-  // if (!app.isPackaged && process.env.DEV_UI_URL) {
-  //   win.loadURL(process.env.DEV_UI_URL).catch((reason) => {
-  //     dialog.showErrorBox("Something went wrong", reason.toString());
-  //   });
-  // } else {
-  //   let index = url.format({
-  //     pathname: path.join(__dirname, 'index.html'),
-  //     protocol: 'file',
-  //     slashes: true,
-  //   });
-  //   win.loadURL(index).catch((reason) => {
-  //     dialog.showErrorBox("Something went wrong", reason.toString());
-  //   });
-  // }
+  if (!app.isPackaged && process.env.DEV_UI_URL) {
+    window.loadURL(process.env.DEV_UI_URL).catch((reason) => {
+      dialog.showErrorBox("Something went wrong", reason.toString());
+    });
+  } else {
+    let index = url.format({
+      pathname: path.join(__dirname, 'index.html'),
+      protocol: 'file',
+      slashes: true,
+    });
+    window.loadURL(index).catch((reason) => {
+      dialog.showErrorBox("Something went wrong", reason.toString());
+    });
+  }
 }
 
 function setupIpcHandlers() {

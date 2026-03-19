@@ -1,22 +1,30 @@
 {
-  "name": "launcher",
-  "version": "1.0.0",
+  "name": "@indigo-launcher/launcher",
+  "description": "One Launcher. Every Library.",
+  "version": "0.0.1",
   "private": true,
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "better-sqlite3"
-    ]
-  },
   "scripts": {
-    "start:dev": "concurrently \"cross-env BROWSER=none npm start --prefix apps/ui\" \"npx wait-on http://127.0.0.1:5173 && cross-env DEV_UI_URL=http://localhost:5173 npm start -prefix apps/electron\""
+    "start:dev": "concurrently \"cross-env BROWSER=none npm start --prefix ui\" \"npx wait-on tcp:5173 && cross-env DEV_UI_URL=http://localhost:5173 npm start --prefix electron\""
   },
   "workspaces": [
-    "apps/*"
+    "electron",
+    "ui"
   ],
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.29.2",
+  "contributors": [
+    "Noah Soppelsa (u2462115@unimail.hud.ac.uk)",
+    "Muhammad Zia (u2469973@unimail.hud.ac.uk)",
+    "Jerry Ngai (u2459106@unimail.hud.ac.uk)",
+    "Edward Waller (u2462322@unimail.hud.ac.uk)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Indigo-Launcher/Launcher.git"
+  },
+  "keywords": [
+    "launcher",
+    "unified-launcher",
+    "all-in-one-launcher"
+  ],
   "devDependencies": {
     "concurrently": "^9.0.0",
     "cross-env": "^10.1.0",
@@ -24,5 +32,9 @@
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.8.1",
     "wait-on": "^9.0.4"
-  }
+  },
+  "engines": {
+    "node": ">=v24.14.0"
+  },
+  "packageManager": "npm@11.11.0"
 }

@@ -1,0 +1,34 @@
+{
+  "name": "electron",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "contributors": [
+    "Noah Soppelsa (u2462115@unimail.hud.ac.uk)",
+    "Muhammad Zia (u2469973@unimail.hud.ac.uk)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Indigo-Launcher/Launcher.git",
+    "directory": "electron"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.6.1",
+    "@electron-forge/maker-deb": "^7.11.1",
+    "@electron-forge/maker-rpm": "^7.11.1",
+    "@electron-forge/maker-squirrel": "^7.11.1",
+    "@electron-forge/maker-zip": "^7.11.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.11.1",
+    "@electron-forge/plugin-fuses": "^7.11.1",
+    "@electron/fuses": "^1.8.0",
+    "electron": "^40.4.1"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.1"
+  }
+}

@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
-import TitleBar from './TitleBar';
-import Sidebar from './Sidebar';
+import TitleBar from './TitleBar.jsx';
+import Sidebar from './Sidebar.jsx';
 
 function Layout() {
   return (
