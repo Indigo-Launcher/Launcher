@@ -1,6 +1,8 @@
 # Indigo Launcher
 
-A unified PC game library desktop app built with Electron, React, and SQLite.
+An Electron + React desktop app prototype for a unified PC game launcher.
+
+Right now the repo contains the desktop shell, some basic routed pages, and a few standalone UI mockups for onboarding and auth. Database work, launcher imports, playtime tracking, and the bigger launcher features are not built yet.
 
 ## Prerequisites
 
@@ -11,21 +13,34 @@ A unified PC game library desktop app built with Electron, React, and SQLite.
 ## Getting Started
 
 ```shell
-# Create directory and go into the directory
-mkdir ./Launcher
-cd Launcher
-
-# Initialise the git repository and add remote origin
-git init
-git remote add origin https://github.com/Indigo-Launcher/Launcher.git
-git branch -M dev
-
 # Install dependencies
 npm install
 
-# Run the application
+# Run the Electron app with the UI dev server
 npm run start:dev
 ```
+
+For UI-only work:
+
+```shell
+npm run start --prefix ui
+```
+
+## Current State
+
+- Electron window with a custom title bar and window controls
+- React app shell with Home, Library, and Settings routes
+- Login and register pages
+- Extra mockup pages in the repo for landing and onboarding
+
+## Not Built Yet
+
+- Database or saved game library
+- Platform import
+- Playtime tracking
+- Quests logic
+- Recommendations
+- Working auth
 
 ## Branch Strategy
 

@@ -65,7 +65,7 @@ export default function Genres() {
                 </div>
 
                 <button
-                    onClick={() => navigate("/genres")}
+                    onClick={() => navigate("/account-link")}
                     className="bg-indigo-500 hover:bg-indigo-600 px-10 py-3 rounded-full font-medium"
                 >
                     Continue

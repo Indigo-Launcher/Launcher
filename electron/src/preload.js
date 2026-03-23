@@ -25,5 +25,7 @@ contextBridge.exposeInMainWorld('dev.indigo.launcher', {
    */
   launchApp: (id) => {
 
-  }
+  },
+  selectGameFile: () => ipcRenderer.invoke('select-game-file'),
+  selectCoverImage: () => ipcRenderer.invoke('select-cover-image'),
 });
