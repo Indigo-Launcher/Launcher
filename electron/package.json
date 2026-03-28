@@ -1,5 +1,6 @@
 {
-  "name": "electron",
+  "name": "indigo-launcher",
+  "productName": "IndigoLauncher",
   "version": "0.0.1",
   "description": "",
   "main": "src/main.js",
@@ -29,6 +30,7 @@
     "electron": "^40.4.1"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.1"
+    "electron-squirrel-startup": "^1.0.1",
+    "vdf": "^0.0.2"
   }
 }

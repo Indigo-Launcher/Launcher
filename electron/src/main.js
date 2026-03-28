@@ -9,8 +9,11 @@ const {
   BrowserWindow,
   app,
   ipcMain,
-  dialog
+  dialog,
 } = require('electron');
+
+const EpicGamesLauncher = require('./launchers/EpicGamesLauncher');
+const SteamLauncher = require('./launchers/SteamLauncher');
 
 /**
  * The main function to create the electron {@link BrowserWindow}.
@@ -54,31 +57,14 @@ const createWindow = () => {
   }
 }
 
-function setupIpcHandlers() {
-  // file picker handlers
-
-  ipcMain.handle('select-game-file', async () => {
-    const result = await dialog.showOpenDialog({
-      title: 'Select game executable',
-      filters: [{ name: 'Executables', extensions: ['exe'] }],
-      properties: ['openFile'],
-    });
-    return result.canceled ? null : result.filePaths[0];
-  });
-
-  ipcMain.handle('select-cover-image', async () => {
-    const result = await dialog.showOpenDialog({
-      title: 'Select cover image',
-      filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'gif', 'webp'] }],
-      properties: ['openFile'],
-    });
-    return result.canceled ? null : result.filePaths[0];
-  });
-}
-
-app.whenReady().then(() => {
-  setupIpcHandlers();
+app.whenReady().then(async () => {
   createWindow();
+
+  const steamLauncher = new SteamLauncher();
+  const epicGamesLauncher = new EpicGamesLauncher();
+
+  console.log(await steamLauncher.search());
+  console.log(await epicGamesLauncher.search());
 });
 
 app.on('window-all-closed', () => {
