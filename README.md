@@ -40,14 +40,14 @@ npm run start --prefix ui
 - Playtime tracking
 - Quests logic
 - Recommendations
-- Working auth
+- UI wired to the API (auth forms exist but don't call the backend yet)
 
 ## Branch Strategy
 
 - `main` — Stable code only, **NEVER** push here directly.
 - `dev` — Integration branch, merge your other branches here.
-- `feat/[name]` — Create one of these when implementing new features.
-- `chore/[name]` — Create one of these when making minor changes.
+- `feature/[name]` — Create one of these when implementing new features.
+- `chore/[name]` — for minor changes like config updates or cleanup.
 
 Always branch off `dev`, **NEVER** off `main`.
 
