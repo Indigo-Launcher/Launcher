@@ -33,10 +33,6 @@ class GameLauncher {
      */
     this.name = name.toLowerCase().trim().replace(/\s/g, '-');
 
-    /**
-     * The data path of the launcher implementation
-     * @type {string|*}
-     */
     this.dataPath = dataPath;
 
     /**

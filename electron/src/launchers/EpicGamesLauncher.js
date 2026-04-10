@@ -16,11 +16,12 @@ const GameLauncher = require("../structures/interfaces/GameLauncher");
  */
 class EpicGamesLauncher extends GameLauncher {
   constructor() {
-    super(
-      1,
-      'EpicGamesLauncher',
-      path.join(process.env.ProgramData, 'Epic', 'EpicGamesLauncher', 'Data')
-    );
+    let home = "";
+    switch (process.platform) {
+      case 'darwin': home = path.join(process.env['HOME'], 'Library', 'Application Support');break;
+      case "win32": home = process.env['ProgramData'];
+    }
+    super(1, 'EpicGamesLauncher', path.join(home, 'Epic', 'EpicGamesLauncher', 'Data'));
   }
 
   get scheme() {
@@ -35,7 +36,7 @@ class EpicGamesLauncher extends GameLauncher {
           .filter((file) => file.endsWith('.item'))
           .map(async (file) => {
             const manifest = JSON.parse(await fs.readFile(path.join(manifestPath, file), 'utf8'));
-            return [manifest['MainGameCatalogNamespace'], manifest['DisplayName']];
+            return [[manifest['CatalogNamespace'], manifest['CatalogItemId'], manifest['AppName']].join('%3A'), manifest['DisplayName']];
           })
       ).catch((err) => {
         console.error(err);

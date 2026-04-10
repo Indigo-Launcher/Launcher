@@ -17,7 +17,12 @@ const vdf = require('vdf');
  */
 class SteamLauncher extends GameLauncher {
   constructor() {
-    super(2, 'SteamLauncher', path.join(process.env['ProgramFiles(x86)'], 'Steam'));
+    let launcherHome = "";
+    switch (process.platform) {
+      case 'darwin': launcherHome = path.join(process.env['HOME'], 'Library', 'Application Support');break;
+      case "win32": launcherHome = path.join(process.env['ProgramFiles(x86)']);
+    }
+    super(2, 'SteamLauncher', path.join(launcherHome, 'Steam'));
   }
 
   get scheme() {
