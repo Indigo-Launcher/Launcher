@@ -21,14 +21,14 @@ class EpicGamesLauncher extends GameLauncher {
       case 'darwin': home = path.join(process.env['HOME'], 'Library', 'Application Support');break;
       case "win32": home = process.env['ProgramData'];
     }
-    super(1, 'EpicGamesLauncher', path.join(home, 'Epic', 'EpicGamesLauncher', 'Data'));
+    super('Epic Games', path.join(home, 'Epic', 'EpicGamesLauncher', 'Data'));
   }
 
   get scheme() {
     return 'com.epicgames.launcher://apps/#[id]?action=launch&silent=true';
   }
 
-  async onSearch() {
+  async onScan() {
     const manifestPath = path.join(this.dataPath, 'Manifests');
     return fs.readdir(manifestPath).then((files) =>
       Promise.all(

@@ -9,7 +9,7 @@ const path = require('node:path');
 const vdf = require('vdf');
 
 /**
- * A {@link GameLauncher} implementation for the Steam Laumncher.
+ * A {@link GameLauncher} implementation for the Steam Launcher.
  *
  * @extends {GameLauncher}
  * @since v0
@@ -22,14 +22,14 @@ class SteamLauncher extends GameLauncher {
       case 'darwin': launcherHome = path.join(process.env['HOME'], 'Library', 'Application Support');break;
       case "win32": launcherHome = path.join(process.env['ProgramFiles(x86)']);
     }
-    super(2, 'SteamLauncher', path.join(launcherHome, 'Steam'));
+    super('Steam', path.join(launcherHome, 'Steam'));
   }
 
   get scheme() {
     return 'steam://rungameid/#[id]';
   }
 
-  async onSearch() {
+  async onScan() {
     const manifests = [];
     const searchPaths = await this._findSearchPaths();
     for (const searchPath of searchPaths) {

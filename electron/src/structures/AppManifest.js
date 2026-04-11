@@ -10,33 +10,31 @@
  * @author Noah Soppelsa
  */
 class AppManifest {
-
-    /**
-     * Construct a new {@link AppManifest} object.
-     *
-     * @param {string} appId the unique internal identifier
-     * @param {string} externalId the unique external identifier
-     * @param {string} displayName the display name for the app
-     */
-    constructor(appId, externalId, displayName) {
+    constructor(appId, externalId, displayName, gameLauncher) {
 
         /**
          * The internal unique id of the app (provided by the API)
          * @type {string}
          */
-        this.appId = appId;
+        this.AppId = appId;
 
         /**
          * The external unique id of the app (provided by the Game Engine)
          * @type {string}
          */
-        this.externalId = externalId;
+        this.ExternalId = externalId;
 
         /**
          * The display name of the app
          * @type {string}
          */
-        this.displayName = displayName;
+        this.DisplayName = displayName;
+
+        /**
+         * The game launcher the app is associated with
+         * @type {string}
+         */
+        this.GameLauncher = gameLauncher;
     }
 }
 
