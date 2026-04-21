@@ -1,36 +1,47 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout.jsx';
-import Home from './pages/Home.jsx';
-import Library from './pages/Library.jsx';
-import Settings from './pages/Settings.jsx';
-import Quests from './pages/Quests.jsx';
-import Landing from './pages/Landing.jsx';
-import Welcome from './pages/Welcome.jsx';
-import Genres from './pages/Genres.jsx';
-import AccountLink from './pages/AccountLink.jsx';
-import Login from './pages/auth/Login.jsx';
-import Signup from './pages/auth/Signup.jsx';
+
+import Layout from './components/Layout';
+
+import Index from './pages/Index';
+import Home from './pages/Home';
+import Discover from './pages/Discover';
+import Quests from './pages/Quests';
+import Friends from './pages/Friends';
+import PointsShop from './pages/PointsShop';
+
+import Login from './pages/auth/Login';
+import Signup from './pages/auth/Signup';
+
+import Welcome from './pages/onboarding/Welcome';
+import LinkAccounts from './pages/onboarding/LinkAccounts';
+import ScanFiles from './pages/onboarding/ScanFiles';
+import Genres from './pages/onboarding/Genres';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/landing" element={<Landing />} />
-        <Route path="/welcome" element={<Welcome />} />
-        <Route path="/genres" element={<Genres />} />
-        <Route path="/account-link" element={<AccountLink />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Signup />} />
+        {/* Dev index — no layout */}
+        <Route path="/" element={<Index />} />
+
+        {/* Pages WITH sidebar/layout (logged in) */}
         <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/library" element={<Library />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/discover" element={<Discover />} />
           <Route path="/quests" element={<Quests />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="users">
-            <Route path=":id" element={null} />
-            <Route path=":id/library" element={<Library />} />
-          </Route>
+          <Route path="/friends" element={<Friends />} />
+          <Route path="/points-shop" element={<PointsShop />} />
         </Route>
+
+        {/* Auth pages */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* Onboarding — 4 step flow */}
+        <Route path="/onboarding/welcome" element={<Welcome />} />
+        <Route path="/onboarding/link" element={<LinkAccounts />} />
+        <Route path="/onboarding/scan" element={<ScanFiles />} />
+        <Route path="/onboarding/genres" element={<Genres />} />
       </Routes>
     </BrowserRouter>
   );

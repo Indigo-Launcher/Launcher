@@ -1,20 +1,22 @@
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import TitleBar from './TitleBar.jsx';
-import Sidebar from './Sidebar.jsx';
+import TitleBar from './TitleBar';
+import Sidebar from './Sidebar';
+import SettingsModal from './SettingsModal';
 
-function Layout() {
+export default function Layout() {
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
   return (
-    <div className="h-screen flex flex-col bg-[#0f0f1a] text-white overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden" style={{ backgroundColor: '#0f0f1a' }}>
       <TitleBar />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto p-8">
-          {' '}
+        <Sidebar onSettingsOpen={() => setSettingsOpen(true)} />
+        <main className="flex-1 overflow-y-auto p-8 text-white">
           <Outlet />
         </main>
       </div>
+      {settingsOpen && <SettingsModal onClose={() => setSettingsOpen(false)} />}
     </div>
   );
 }
-
-export default Layout;
