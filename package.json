@@ -36,7 +36,7 @@
     "wait-on": "^9.0.4"
   },
   "engines": {
-    "node": ">=v24.14.0"
+    "node": ">=24.0.0"
   },
   "packageManager": "npm@11.11.0"
 }
