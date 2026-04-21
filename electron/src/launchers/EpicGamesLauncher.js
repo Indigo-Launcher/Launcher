@@ -36,6 +36,7 @@ class EpicGamesLauncher extends GameLauncher {
           .filter((file) => file.endsWith('.item'))
           .map(async (file) => {
             const manifest = JSON.parse(await fs.readFile(path.join(manifestPath, file), 'utf8'));
+            console.log(manifest);
             return [[manifest['CatalogNamespace'], manifest['CatalogItemId'], manifest['AppName']].join('%3A'), manifest['DisplayName']];
           })
       ).catch((err) => {

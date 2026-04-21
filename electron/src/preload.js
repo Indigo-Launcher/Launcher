@@ -2,9 +2,8 @@
  * Copyright (c) 2026 Team Indigo
  */
 const { contextBridge, ipcRenderer } = require('electron');
-const {ALL_LAUNCHERS, LAUNCHER_BY_ID} = require("./launchers");
 
-contextBridge.exposeInMainWorld('dev.indigo.launcher', {
+contextBridge.exposeInMainWorld('api', {
   // Window controls: these are fire and forget so they use send, not invoke
   minimize: () => ipcRenderer.send('window-minimize'),
   maximize: () => ipcRenderer.send('window-maximize'),
@@ -27,14 +26,10 @@ contextBridge.exposeInMainWorld('dev.indigo.launcher', {
    * <p>This </p>
    *
    * @param apps
-   * @TODO
    */
-  import: (apps) => {
-
-  },
+  import: (apps) => ipcRenderer.send('import', apps),
   /**
    * Launch an app by its internal identifier.
-   * @TODO
    *
    * @param {string} id the unique internal identifier for the app
    */

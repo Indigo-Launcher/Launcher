@@ -60,12 +60,13 @@ class IndigoClient {
 
         /**
          * Pending apps to import upon request
-         * @type {Map<string, AppManifest>}
+         * @type {AppManifest[]}
          */
-        this.pendingApps = new Map();
+        this.pendingApps = [];
 
         ipcMain.on('supported-launchers', () => this.supportedLaunchers);
         ipcMain.on('scan', (event, requestedLaunchers) => this.scan(requestedLaunchers));
+        ipcMain.on('import', (event, apps) => this.importPending(apps));
         ipcMain.on('launch-app', (event, appId) => this.launchApp(appId));
 
         // Create the browser window
@@ -78,13 +79,14 @@ class IndigoClient {
      * <p>This method returns an array or scannable game launchers which can then
      * be imported into indigo launcher.</p>
      *
-     * @returns {{name: string}[]}
+     * @returns {{ name: string; scan_directory: string; }[]}
      */
     get supportedLaunchers() {
         return this.ALL_LAUNCHERS.filter(launcher => launcher.canScan()).map(launcher => {
             return {
                 name: launcher.name,
-            }
+                scan_directory: launcher.dataPath,
+            };
         });
     }
 
@@ -92,6 +94,8 @@ class IndigoClient {
      * Scan a set of {@link GameLauncher}'s
      *
      * @param {string[]} requestedLaunchers the requested launcher names
+     *
+     * @returns {Promise<{ display_name: string; game_launcher: string; }[]>}
      */
     async scan(requestedLaunchers) {
         for (const launcherId of requestedLaunchers) {
@@ -99,14 +103,13 @@ class IndigoClient {
 
             const launcher = await this.LAUNCHERS_BY_ID.get(launcherId);
             (await launcher.scan()).forEach((manifest) => {
-                this.pendingApps.set(manifest['AppId'], manifest);
+                this.pendingApps.push(manifest);
             });
         }
 
         // Return a partial manifest so the frontend can display options
         return [...this.pendingApps.values()].map(manifest => {
             return {
-                app_id: manifest['AppId'],
                 display_name: manifest['DisplayName'],
                 game_launcher: manifest['GameLauncher']
             }
@@ -114,17 +117,21 @@ class IndigoClient {
     }
 
     async saveManifest(appId) {
-        const manifest = this.pendingApps.get(appId);
+        // const manifest = this.pendingApps.get(appId);
+        //
+        // // Return error if the manifest doesnt exist
+        // if (!manifest) return {
+        //     status: 'APP_NOT_FOUND',
+        //     description: 'The requested app manifest could not be found.'
+        // };
+        //
+        // // Attempt the write the manifest
+        // await fs.writeFile(path.join(this.manifestDir, `app_${manifest.AppId}.manifest`), JSON.stringify(manifest, null, 2), 'utf8');
+        // console.log(`Saved ${manifest['AppId']}`);
+    }
 
-        // Return error if the manifest doesnt exist
-        if (!manifest) return {
-            status: 'APP_NOT_FOUND',
-            description: 'The requested app manifest could not be found.'
-        };
+    importPending(apps) {
 
-        // Attempt the write the manifest
-        await fs.writeFile(path.join(this.manifestDir, `app_${manifest.AppId}.manifest`), JSON.stringify(manifest, null, 2), 'utf8');
-        console.log(`Saved ${manifest['AppId']}`);
     }
 
     /**

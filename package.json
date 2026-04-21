@@ -6,10 +6,12 @@
   "scripts": {
     "start:dev": "concurrently \"cross-env BROWSER=none npm start --prefix ui\" \"npx wait-on tcp:5173 && cross-env DEV_UI_URL=http://localhost:5173 npm start --prefix electron\""
   },
-  "workspaces": [
-    "electron",
-    "ui"
-  ],
+  "workspaces": {
+    "packages": [
+      "electron",
+      "ui"
+    ]
+  },
   "contributors": [
     "Noah Soppelsa (u2462115@unimail.hud.ac.uk)",
     "Muhammad Zia (u2469973@unimail.hud.ac.uk)",
