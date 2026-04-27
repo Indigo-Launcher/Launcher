@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Storefront, CaretUp, CaretDown } from '@phosphor-icons/react';
 import { useNavigate } from 'react-router-dom';
-import XPBar from '../../components/XPBar';
-import { PLAYER } from '../../shared/player';
-import { COMPLETED_QUESTS, POINTS_BALANCE, QUEST_STATS, TODAYS_QUESTS } from './data/questsData';
+import XPBar from '../../app/components/XPBar';
+import { useProfile, useQuestData } from '../../app/providers/AppDataProvider';
+import { useDemoStore } from '../../app/providers/DemoStoreProvider';
 import PointsBalance from './components/PointsBalance';
 import QuestStatCard from './components/QuestStatCard';
 import QuestCard from './components/QuestCard';
@@ -11,7 +11,10 @@ import QuestCard from './components/QuestCard';
 export default function QuestsPage() {
   const navigate = useNavigate();
   const [completedOpen, setCompletedOpen] = useState(true);
-  const { level, currentXP, maxXP, dayStreak, questsCompleted, achievements } = PLAYER;
+  const profile = useProfile();
+  const { completedQuests, questStats, todaysQuests } = useQuestData();
+  const { points } = useDemoStore();
+  const { level, currentXP, maxXP, dayStreak, questsCompleted, achievements } = profile;
   const statValues = { dayStreak, questsCompleted, achievements };
 
   return (
@@ -27,23 +30,21 @@ export default function QuestsPage() {
             onClick={() => navigate('/points-shop')}
             className="w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
             style={{
-              backgroundColor: 'var(--color-surface-light)',
-              border: '1px solid var(--color-border)',
+              backgroundColor: 'var(--color-primary)',
+              border: '1px solid #6f74ff',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--color-primary)')}
-            onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--color-border)')}
             title="Points Shop"
           >
-            <Storefront size={18} weight="fill" className="text-zinc-300" />
+            <Storefront size={18} weight="fill" className="text-white" />
           </button>
-          <PointsBalance points={POINTS_BALANCE} />
+          <PointsBalance points={points} />
         </div>
       </div>
 
       <XPBar level={level} currentXP={currentXP} maxXP={maxXP} />
 
       <div className="grid grid-cols-3 gap-4 mb-8">
-        {QUEST_STATS.map((stat) => (
+        {questStats.map((stat) => (
           <QuestStatCard
             key={stat.key}
             value={statValues[stat.key]}
@@ -55,14 +56,14 @@ export default function QuestsPage() {
       </div>
 
       <h2 className="text-lg font-semibold mb-4">Today's Quests</h2>
-      {TODAYS_QUESTS.length === 0 ? (
+      {todaysQuests.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center mb-8">
           <p className="text-zinc-500 text-lg font-medium">No quests available</p>
           <p className="text-zinc-600 text-sm mt-1">Check back tomorrow for new challenges</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3 mb-8">
-          {TODAYS_QUESTS.map((quest) => (
+          {todaysQuests.map((quest) => (
             <QuestCard key={quest.id} quest={quest} />
           ))}
         </div>
@@ -77,13 +78,13 @@ export default function QuestsPage() {
       </button>
 
       {completedOpen &&
-        (COMPLETED_QUESTS.length === 0 ? (
+        (completedQuests.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-8 text-center">
             <p className="text-zinc-600 text-sm">No completed quests yet</p>
           </div>
         ) : (
           <div className="flex flex-col gap-3">
-            {COMPLETED_QUESTS.map((quest) => (
+            {completedQuests.map((quest) => (
               <QuestCard key={quest.id} quest={quest} completed />
             ))}
           </div>

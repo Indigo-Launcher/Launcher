@@ -18,12 +18,25 @@ function NameplatePreview({ preview, name }) {
   );
 }
 
-export default function NameplateCard({ item, canAfford }) {
+export default function NameplateCard({ item, canAfford, isOwned, onBuy }) {
   return (
-    <div key={item.id} className="card p-4 shrink-0 flex flex-col" style={{ width: '200px' }}>
-      <NameplatePreview preview={item.preview} name="Display Name" />
+    <div
+      key={item.id}
+      className="card p-4 shrink-0 flex flex-col"
+      style={{
+        width: '200px',
+        opacity: isOwned ? 0.72 : 1,
+      }}
+    >
+      {item.image ? (
+        <div className="mb-3 h-20 overflow-hidden rounded-lg border border-white/5">
+          <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+        </div>
+      ) : (
+        <NameplatePreview preview={item.preview} name="Display Name" />
+      )}
       <p className="text-sm font-medium text-white mb-1">{item.name}</p>
-      <BuyButton price={item.price} canAfford={canAfford} />
+      <BuyButton price={item.price} canAfford={canAfford} isOwned={isOwned} onBuy={onBuy} />
     </div>
   );
 }

@@ -6,7 +6,7 @@ export default function RecentCard({ title, hours, platform, cover }) {
 
   return (
     <div
-      className="card flex items-center gap-3 px-4 py-3 cursor-pointer hover:border-indigo-500 transition-colors relative overflow-hidden"
+      className="card flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors relative overflow-hidden min-h-[54px]"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -20,7 +20,7 @@ export default function RecentCard({ title, hours, platform, cover }) {
         </p>
       </div>
       {hovered && (
-        <div className="absolute inset-0 bg-indigo-500/90 flex items-center justify-center gap-2">
+        <div className="absolute inset-0 flex items-center justify-center gap-2 bg-emerald-700/90">
           <Play size={16} weight="fill" className="text-white" />
           <span className="text-sm font-semibold text-white">PLAY</span>
         </div>

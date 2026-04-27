@@ -1,94 +1,134 @@
-import { useState } from 'react';
-import { Check } from '@phosphor-icons/react';
-import { THEMES, useTheme } from '../../../shared/theme';
+import { useEffect, useState } from 'react';
+import { useTheme } from '../../../app/theme/theme';
 import SettingsToggle from '../components/SettingsToggle';
 
-function ThemePreviewCard({ theme, isActive, onSelect }) {
-  const primary = theme.colors['--color-primary'];
-  const surface = theme.colors['--color-surface'];
-  const border = theme.colors['--color-border'];
+const THEME_KEYS = [
+  ['Primary Colour', '--color-primary'],
+  ['Primary Light', '--color-primary-light'],
+  ['Primary Dark', '--color-primary-dark'],
+  ['Background', '--color-bg'],
+  ['Surface', '--color-surface'],
+  ['Surface Light', '--color-surface-light'],
+  ['Outline', '--color-border'],
+];
 
-  return (
-    <button
-      onClick={onSelect}
-      className="relative rounded-xl overflow-hidden border-2 transition-all duration-200 cursor-pointer"
-      style={{
-        borderColor: isActive ? primary : border,
-        backgroundColor: surface,
-      }}
-    >
-      <div className="p-3">
-        <div className="flex gap-2 mb-2">
-          <div
-            className="w-2 rounded-full"
-            style={{
-              backgroundColor: theme.colors['--color-surface-light'],
-              height: '40px',
-            }}
-          />
-          <div className="flex-1 flex flex-col gap-1 justify-center">
-            <div className="h-2 rounded-full w-full" style={{ backgroundColor: primary }} />
-            <div className="h-1.5 rounded-full w-3/4" style={{ backgroundColor: border }} />
-            <div className="h-1.5 rounded-full w-3/4" style={{ backgroundColor: border }} />
-          </div>
-        </div>
-        <div className="flex gap-1.5">
-          {[1, 2, 3].map((previewItem) => (
-            <div
-              key={previewItem}
-              className="flex-1 h-6 rounded"
-              style={{ backgroundColor: theme.colors['--color-surface-light'] }}
-            />
-          ))}
-        </div>
-        <div className="mt-2 h-4 rounded w-1/2 ml-auto" style={{ backgroundColor: primary }} />
-      </div>
+function hexToRgb(hex) {
+  const sanitized = hex.replace('#', '');
+  const normalized = sanitized.length === 3
+    ? sanitized
+        .split('')
+        .map((char) => char + char)
+        .join('')
+    : sanitized;
 
-      <div
-        className="px-3 py-2 flex items-center justify-between border-t"
-        style={{ borderColor: border }}
-      >
-        <span className="text-xs font-semibold text-white">{theme.label}</span>
-        {isActive && (
-          <div
-            className="w-4 h-4 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: primary }}
-          >
-            <Check size={10} weight="bold" className="text-white" />
-          </div>
-        )}
-      </div>
-    </button>
-  );
+  const value = parseInt(normalized, 16);
+
+  return {
+    r: (value >> 16) & 255,
+    g: (value >> 8) & 255,
+    b: value & 255,
+  };
+}
+
+function rgbToHex({ r, g, b }) {
+  return `#${[r, g, b]
+    .map((value) => Math.max(0, Math.min(255, value)).toString(16).padStart(2, '0'))
+    .join('')}`;
 }
 
 export default function GeneralTab() {
   const [questTracking, setQuestTracking] = useState(true);
-  const { themeId, setThemeId } = useTheme();
+  const { activeTheme, defaultTheme, applyThemeColors, resetThemeColors } = useTheme();
+  const [editableColors, setEditableColors] = useState(activeTheme.colors);
+
+  useEffect(() => {
+    setEditableColors(activeTheme.colors);
+  }, [activeTheme]);
+
+  function updateChannel(key, channel, value) {
+    const rgb = hexToRgb(editableColors[key]);
+    const nextRgb = { ...rgb, [channel]: Number(value) };
+
+    setEditableColors((prev) => ({
+      ...prev,
+      [key]: rgbToHex(nextRgb),
+    }));
+  }
+
+  function handleSubmit() {
+    applyThemeColors(editableColors);
+  }
+
+  function handleReset() {
+    setEditableColors(defaultTheme.colors);
+    resetThemeColors();
+  }
 
   return (
     <div>
-      <h2 className="text-xl font-bold text-white mb-1">General</h2>
-      <p className="text-zinc-500 text-sm mb-6">Customise your experience</p>
+      <h2 className="mb-1 text-[40px] font-bold leading-none text-white">General</h2>
+      <p className="mb-6 text-[14px] text-zinc-500">Customise your experience</p>
 
-      <h3 className="text-sm font-semibold text-white mb-3">Colour Theme</h3>
-      <div className="card p-5 mb-6">
-        <p className="text-xs text-zinc-500 mb-4">
-          Choose a colour theme. Changes apply instantly across the entire launcher.
-        </p>
-        <div className="grid grid-cols-3 gap-3">
-          {THEMES.map((theme) => (
-            <ThemePreviewCard
-              key={theme.id}
-              theme={theme}
-              isActive={theme.id === themeId}
-              onSelect={() => setThemeId(theme.id)}
-            />
-          ))}
+      <h3 className="mb-3 text-sm font-semibold text-white">Appearance</h3>
+      <div className="card mb-6 p-5">
+        {THEME_KEYS.map(([label, key], index) => (
+          <div
+            key={key}
+            className={`py-3 ${
+              index < THEME_KEYS.length - 1 ? 'border-b border-[#25253d]' : ''
+            }`}
+          >
+            <div className="mb-3 flex items-center justify-between gap-4">
+              <span className="text-sm text-white">{label}</span>
+              <div className="flex items-center gap-3">
+                <span className="text-xs uppercase tracking-wide text-zinc-500">
+                  {editableColors[key]}
+                </span>
+                <span
+                  className="h-4 w-4 rounded-[5px] border border-white/10"
+                  style={{ backgroundColor: editableColors[key] }}
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              {[
+                ['R', 'r'],
+                ['G', 'g'],
+                ['B', 'b'],
+              ].map(([channelLabel, channelKey]) => (
+                <label key={channelKey} className="flex items-center gap-3">
+                  <span className="w-4 text-xs font-semibold text-zinc-500">{channelLabel}</span>
+                  <input
+                    type="range"
+                    min="0"
+                    max="255"
+                    value={hexToRgb(editableColors[key])[channelKey]}
+                    onChange={(event) => updateChannel(key, channelKey, event.target.value)}
+                    className="slider-thumb h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-[#2d2c47]"
+                  />
+                  <span className="w-8 text-right text-xs text-zinc-500">
+                    {hexToRgb(editableColors[key])[channelKey]}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <div className="mt-4 flex justify-end gap-3 border-t border-[#25253d] pt-4">
+          <button onClick={handleReset} className="btn-ghost px-4 py-2 text-sm">
+            Reset Colours
+          </button>
+          <button onClick={() => setEditableColors(activeTheme.colors)} className="btn-ghost px-4 py-2 text-sm">
+            Cancel
+          </button>
+          <button onClick={handleSubmit} className="btn-primary px-4 py-2 text-sm">
+            Submit Changes
+          </button>
         </div>
       </div>
 
-      <h3 className="text-sm font-semibold text-white mb-3">Notifications</h3>
+      <h3 className="mb-3 text-sm font-semibold text-white">Notifications</h3>
       <div className="card p-5">
         <div className="flex items-center justify-between">
           <span className="text-sm text-white">Quest Tracking</span>

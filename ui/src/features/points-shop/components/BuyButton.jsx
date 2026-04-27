@@ -1,19 +1,42 @@
-export default function BuyButton({ price, canAfford }) {
+import { useState } from 'react';
+
+export default function BuyButton({ price, canAfford, isOwned, onBuy }) {
+  const [showError, setShowError] = useState(false);
+
+  function handleClick() {
+    if (isOwned) return;
+    const success = onBuy();
+
+    if (!success) {
+      setShowError(true);
+      setTimeout(() => setShowError(false), 900);
+    }
+  }
+
+  const backgroundColor = isOwned
+    ? '#4b5563'
+    : showError
+      ? '#ef4444'
+      : canAfford
+        ? 'var(--color-primary)'
+        : 'var(--color-border)';
+
   return (
-    <div className="flex items-center justify-between mt-auto">
+    <div className="mt-auto flex items-center justify-between">
       <div className="flex items-center gap-1.5">
-        <img src="/Points.png" width={14} height={14} style={{ objectFit: 'contain' }} />
-        <span className="text-sm font-bold text-white tabular-nums">{price}</span>
+        <img src="/Icons/Points.png" width={14} height={14} style={{ objectFit: 'contain' }} />
+        <span className="tabular-nums text-sm font-bold text-white">{price}</span>
       </div>
       <button
-        className="text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors text-white"
+        onClick={handleClick}
+        className="rounded-lg px-3 py-1.5 text-xs font-semibold text-white transition-colors"
         style={{
-          backgroundColor: canAfford ? 'var(--color-primary)' : 'var(--color-border)',
-          cursor: canAfford ? 'pointer' : 'not-allowed',
-          opacity: canAfford ? 1 : 0.6,
+          backgroundColor,
+          cursor: isOwned ? 'default' : 'pointer',
+          opacity: isOwned || canAfford || showError ? 1 : 0.75,
         }}
       >
-        Buy
+        {isOwned ? 'Owned' : 'Buy'}
       </button>
     </div>
   );

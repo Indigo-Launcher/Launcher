@@ -8,7 +8,7 @@ import {
   EAIcon,
   MinecraftIcon,
   RiotIcon,
-} from '../../../components/PlatformIcons';
+} from '../../../app/components/PlatformIcons';
 
 export const SETTINGS_TABS = ['Account', 'General', 'Connections', 'Advanced'];
 

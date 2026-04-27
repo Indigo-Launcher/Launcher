@@ -14,11 +14,11 @@ export default function LevelBadge({ level, currentXP, maxXP }) {
       onMouseLeave={() => setHovered(false)}
     >
       {hovered && (
-        <span className="text-lg font-semibold text-yellow-400">
+        <span className="text-[17px] font-semibold text-yellow-400/85">
           {currentXP.toLocaleString()} / {maxXP.toLocaleString()}
         </span>
       )}
-      <span className="text-lg font-semibold text-yellow-400">Lvl.</span>
+      <span className="text-[20px] font-semibold text-yellow-400">Lvl.</span>
       <div className="relative w-12 h-12">
         <svg width="48" height="48" viewBox="0 0 48 48" className="-rotate-90">
           <circle cx="24" cy="24" r={radius} fill="none" stroke="#2a2a40" strokeWidth="3" />
@@ -34,7 +34,7 @@ export default function LevelBadge({ level, currentXP, maxXP }) {
             strokeLinecap="round"
           />
         </svg>
-        <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-yellow-400">
+        <span className="absolute inset-0 flex items-center justify-center text-[18px] font-bold text-yellow-400">
           {level}
         </span>
       </div>

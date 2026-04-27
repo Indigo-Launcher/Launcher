@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
-import { INITIAL_GAMES } from '../data/homeData';
 
-export function useHomeFilters() {
+export function useHomeFilters(games) {
   const [search, setSearch] = useState('');
   const [sortOpen, setSortOpen] = useState(false);
   const [sortValue, setSortValue] = useState('alpha-asc');
@@ -28,26 +27,40 @@ export function useHomeFilters() {
   }
 
   const filteredGames = useMemo(() => {
-    let games = [...INITIAL_GAMES];
+    let filtered = [...games];
 
     if (search) {
-      games = games.filter((game) => game.title.toLowerCase().includes(search.toLowerCase()));
+      filtered = filtered.filter((game) => game.title.toLowerCase().includes(search.toLowerCase()));
     }
     if (genreFilters.length) {
-      games = games.filter((game) => genreFilters.includes(game.genre));
+      filtered = filtered.filter((game) => genreFilters.includes(game.genre));
     }
     if (storeFilters.length) {
-      games = games.filter((game) => storeFilters.includes(game.platform));
+      filtered = filtered.filter((game) => storeFilters.includes(game.store));
+    }
+    if (installedOnly) {
+      filtered = filtered.filter((game) => game.installed);
     }
     if (sortValue === 'alpha-asc') {
-      games.sort((a, b) => a.title.localeCompare(b.title));
+      filtered.sort((a, b) => a.title.localeCompare(b.title));
     }
     if (sortValue === 'alpha-desc') {
-      games.sort((a, b) => b.title.localeCompare(a.title));
+      filtered.sort((a, b) => b.title.localeCompare(a.title));
+    }
+    if (sortValue === 'recent') {
+      filtered.sort(
+        (a, b) => RECENT_ORDER.indexOf(a.id) - RECENT_ORDER.indexOf(b.id)
+      );
+    }
+    if (sortValue === 'time-asc') {
+      filtered.sort((a, b) => parseFloat(a.hours) - parseFloat(b.hours));
+    }
+    if (sortValue === 'time-desc') {
+      filtered.sort((a, b) => parseFloat(b.hours) - parseFloat(a.hours));
     }
 
-    return games;
-  }, [search, genreFilters, storeFilters, sortValue]);
+    return filtered;
+  }, [games, search, genreFilters, installedOnly, storeFilters, sortValue]);
 
   return {
     search,
@@ -66,3 +79,18 @@ export function useHomeFilters() {
     filteredGames,
   };
 }
+
+const RECENT_ORDER = [
+  'cyberpunk-2077',
+  'elden-ring',
+  'hades',
+  'marvel-rivals',
+  'subnautica',
+  'baldurs-gate-3',
+  'terraria',
+  'dead-cells',
+  'alan-wake',
+  'civilization-vi',
+  'stardew-valley',
+  'doom-eternal',
+];

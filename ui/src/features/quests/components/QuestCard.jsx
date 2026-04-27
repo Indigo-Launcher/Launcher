@@ -4,28 +4,31 @@ export default function QuestCard({ quest, completed = false }) {
 
   return (
     <div
-      className={`card flex items-center gap-4 px-5 py-4 ${completed ? 'border-green-500/50' : ''}`}
+      className={`card flex items-center gap-4 px-5 py-4 ${
+        completed ? 'border-green-500/50 bg-[#16271e]' : ''
+      }`}
     >
       <div
-        className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
+        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
           completed ? 'bg-green-500/20' : 'bg-[#2a2a40]'
         }`}
       >
         <IconComponent
           size={20}
           weight="fill"
-          className={completed ? 'text-green-400' : 'text-zinc-400'}
+          className={completed ? 'text-green-400' : 'text-zinc-200'}
         />
       </div>
-      <div className="flex-1 min-w-0">
+
+      <div className="min-w-0 flex-1">
         <p className={`text-sm font-medium ${completed ? 'text-green-400' : 'text-white'}`}>
           {quest.title}
         </p>
-        <p className="text-xs text-zinc-500 mt-0.5">{quest.description}</p>
+        <p className="mt-0.5 text-xs text-zinc-500">{quest.description}</p>
         {completed ? (
-          <div className="h-1 bg-green-400 rounded-full mt-2" />
+          <div className="mt-2 h-1 rounded-full bg-green-500" />
         ) : (
-          <div className="h-1 bg-[#2a2a40] rounded-full mt-2 overflow-hidden">
+          <div className="mt-2 h-1 overflow-hidden rounded-full bg-[#2a2a40]">
             <div
               className="h-full rounded-full bg-indigo-500 transition-all duration-500"
               style={{ width: `${progressPercent}%` }}
@@ -33,14 +36,22 @@ export default function QuestCard({ quest, completed = false }) {
           </div>
         )}
       </div>
-      <div className="flex items-center gap-2 whitespace-nowrap">
-        <span className={`text-sm font-semibold ${completed ? 'text-green-400' : 'text-yellow-400'}`}>
-          +{quest.xp} XP{completed ? ' ✓' : ''}
+
+      <div className="flex items-center gap-3 whitespace-nowrap">
+        <span
+          className={`text-sm font-semibold ${completed ? 'text-green-400' : 'text-yellow-400'}`}
+        >
+          +{quest.xp} XP
         </span>
-        <span className={`flex items-center gap-1 text-sm font-semibold ${completed ? 'text-green-400' : 'text-indigo-400'}`}>
-          <img src="/Points.png" width={14} height={14} style={{ objectFit: 'contain' }} />
+        <span
+          className={`flex items-center gap-1 text-sm font-semibold ${
+            completed ? 'text-green-400' : 'text-indigo-400'
+          }`}
+        >
+          <img src="/Icons/Points.png" width={14} height={14} style={{ objectFit: 'contain' }} />
           {quest.points}
         </span>
+        {completed && <span className="text-lg text-green-400">✓</span>}
       </div>
     </div>
   );

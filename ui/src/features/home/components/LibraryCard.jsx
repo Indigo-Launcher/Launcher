@@ -6,7 +6,7 @@ export default function LibraryCard({ title, hours, platform, cover }) {
 
   return (
     <div
-      className="card overflow-hidden cursor-pointer hover:border-indigo-500 transition-colors relative"
+      className="card overflow-hidden cursor-pointer transition-colors relative"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -14,8 +14,8 @@ export default function LibraryCard({ title, hours, platform, cover }) {
         {cover && <img src={cover} alt={title} className="w-full h-full object-cover" />}
       </div>
       {hovered && (
-        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-          <div className="flex items-center gap-2 bg-indigo-500/90 px-4 py-2 rounded-lg">
+        <div className="absolute inset-0 flex items-center justify-center bg-emerald-700/86 backdrop-blur-[1px]">
+          <div className="flex items-center gap-2 rounded-lg bg-transparent px-4 py-2">
             <Play size={16} weight="fill" className="text-white" />
             <span className="text-sm font-semibold text-white">PLAY</span>
           </div>

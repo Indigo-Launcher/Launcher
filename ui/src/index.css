@@ -108,6 +108,25 @@ body {
   color: #a5b4fc;
 }
 
+.slider-thumb::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: var(--color-primary);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px rgb(99 102 241 / 0.2);
+}
+
+.slider-thumb::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: var(--color-primary);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px rgb(99 102 241 / 0.2);
+}
+
 /* ─── Iris Glow ──────────────────────────────────────────────── */
 .iris-glow {
   position: relative;

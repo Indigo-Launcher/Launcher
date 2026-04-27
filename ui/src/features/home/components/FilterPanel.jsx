@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Funnel, X, CaretDown, CaretUp } from '@phosphor-icons/react';
-import { GENRE_FILTERS, STORE_FILTERS } from '../data/homeData';
 
 export default function FilterPanel({
-  genreFilters,
-  storeFilters,
+  genres,
+  stores,
+  selectedGenres,
+  selectedStores,
   installedOnly,
   onGenreToggle,
   onStoreToggle,
@@ -15,52 +16,56 @@ export default function FilterPanel({
   const [storesOpen, setStoresOpen] = useState(true);
 
   return (
-    <div className="card w-52 shrink-0 p-4">
-      <div className="flex items-center justify-between mb-3">
+    <div className="card w-[204px] shrink-0 p-4">
+      <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2 text-sm font-semibold text-white">
           <Funnel size={14} weight="fill" />
           Filters
         </div>
         <button
           onClick={onClear}
-          className="flex items-center gap-1 text-xs text-zinc-500 hover:text-white transition-colors"
+          className="flex items-center gap-1 text-xs text-zinc-500 transition-colors hover:text-white"
         >
           <X size={11} />
           Clear Filters
         </button>
       </div>
 
-      <label className="flex items-center justify-between py-2 cursor-pointer text-sm font-semibold text-white">
+      <button
+        onClick={onInstalledToggle}
+        className={`mt-1 mb-2 flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors ${
+          installedOnly ? 'bg-[#36355d] text-white' : 'text-white'
+        }`}
+      >
         Installed
-        <input
-          type="checkbox"
-          checked={installedOnly}
-          onChange={onInstalledToggle}
-          className="accent-indigo-500 w-4 h-4"
+        <span
+          className={`h-3.5 w-3.5 rounded-sm border ${
+            installedOnly ? 'border-indigo-400 bg-indigo-400' : 'border-[#5a5c89]'
+          }`}
         />
-      </label>
+      </button>
 
       <div className="mt-1">
         <button
           onClick={() => setGenresOpen(!genresOpen)}
-          className="flex items-center justify-between w-full py-2 text-sm font-semibold text-white hover:text-zinc-300 transition-colors"
+          className="flex w-full items-center justify-between py-2 text-sm font-semibold text-white transition-colors hover:text-zinc-300"
         >
           Genres
           {genresOpen ? <CaretUp size={12} /> : <CaretDown size={12} />}
         </button>
         {genresOpen && (
           <div className="flex flex-col">
-            {GENRE_FILTERS.map((genre) => (
+            {genres.map((genre) => (
               <label
                 key={genre}
-                className="flex items-center justify-between py-1.5 cursor-pointer text-xs text-zinc-400 hover:text-white transition-colors"
+                className="flex cursor-pointer items-center justify-between py-1.5 text-xs text-zinc-400 transition-colors hover:text-white"
               >
                 {genre}
                 <input
                   type="checkbox"
-                  checked={genreFilters.includes(genre)}
+                  checked={selectedGenres.includes(genre)}
                   onChange={() => onGenreToggle(genre)}
-                  className="accent-indigo-500 w-3.5 h-3.5"
+                  className="h-3.5 w-3.5 rounded-sm accent-indigo-500"
                 />
               </label>
             ))}
@@ -71,24 +76,24 @@ export default function FilterPanel({
       <div className="mt-1">
         <button
           onClick={() => setStoresOpen(!storesOpen)}
-          className="flex items-center justify-between w-full py-2 text-sm font-semibold text-white hover:text-zinc-300 transition-colors"
+          className="flex w-full items-center justify-between py-2 text-sm font-semibold text-white transition-colors hover:text-zinc-300"
         >
           Digital Store
           {storesOpen ? <CaretUp size={12} /> : <CaretDown size={12} />}
         </button>
         {storesOpen && (
           <div className="flex flex-col">
-            {STORE_FILTERS.map((store) => (
+            {stores.map((store) => (
               <label
                 key={store}
-                className="flex items-center justify-between py-1.5 cursor-pointer text-xs text-zinc-400 hover:text-white transition-colors"
+                className="flex cursor-pointer items-center justify-between py-1.5 text-xs text-zinc-400 transition-colors hover:text-white"
               >
                 {store}
                 <input
                   type="checkbox"
-                  checked={storeFilters.includes(store)}
+                  checked={selectedStores.includes(store)}
                   onChange={() => onStoreToggle(store)}
-                  className="accent-indigo-500 w-3.5 h-3.5"
+                  className="h-3.5 w-3.5 rounded-sm accent-indigo-500"
                 />
               </label>
             ))}

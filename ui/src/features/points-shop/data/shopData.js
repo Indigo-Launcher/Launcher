@@ -1,24 +1,33 @@
 export const POINTS_BALANCE = 500;
 
 export const NAMEPLATES = [
-  { id: 'np-1', name: 'Topography', price: 750, preview: { bg: '#0f0f0f', pattern: 'topo' } },
+  {
+    id: 'np-1',
+    name: 'Topography',
+    price: 750,
+    preview: { bg: '#0f0f0f', pattern: 'topo' },
+    image: '/Nameplates/Topography.jpeg',
+  },
   {
     id: 'np-2',
     name: 'Simple Green Waves',
     price: 500,
     preview: { bg: '#0a2a1a', pattern: 'waves-green' },
+    image: '/Nameplates/GreenWaves.jpeg',
   },
   {
     id: 'np-3',
     name: '3D Blue Waves',
     price: 550,
     preview: { bg: '#0a1a2a', pattern: 'waves-blue' },
+    image: '/Nameplates/3DBlueWave.jpeg',
   },
   {
     id: 'np-4',
-    name: 'Basic Purple',
-    price: 250,
-    preview: { bg: '#1a0a2a', pattern: 'solid-purple' },
+    name: 'Blue Waves',
+    price: 650,
+    preview: { bg: '#12243c', pattern: 'waves-blue' },
+    image: '/Nameplates/4K Wallpaper Macbook blue waves.jpeg',
   },
   {
     id: 'np-5',
@@ -29,11 +38,23 @@ export const NAMEPLATES = [
 ];
 
 export const FRAME_DECORATIONS = [
-  { id: 'fd-1', name: 'Clouds', price: 500, color: '#38bdf8' },
-  { id: 'fd-2', name: 'Glitch', price: 500, color: '#a855f7' },
-  { id: 'fd-3', name: 'Flaming Katana', price: 500, color: '#f97316' },
-  { id: 'fd-4', name: 'Splash', price: 500, color: '#06b6d4' },
-  { id: 'fd-5', name: 'Sleeping Dragon', price: 500, color: '#6b7280' },
+  { id: 'fd-1', name: 'Clouds', price: 500, color: '#38bdf8', image: '/Frame Decorations/Clouds.png' },
+  { id: 'fd-2', name: 'Glitch', price: 500, color: '#a855f7', image: '/Frame Decorations/Glitch.png' },
+  {
+    id: 'fd-3',
+    name: 'Flaming Katana',
+    price: 500,
+    color: '#f97316',
+    image: '/Frame Decorations/FlamingKatana.png',
+  },
+  { id: 'fd-4', name: 'Splash', price: 500, color: '#06b6d4', image: '/Frame Decorations/Splash.png' },
+  {
+    id: 'fd-5',
+    name: 'Sleeping Dragon',
+    price: 500,
+    color: '#6b7280',
+    image: '/Frame Decorations/SleepingDragon.png',
+  },
 ];
 
 export const COLOUR_THEMES = [

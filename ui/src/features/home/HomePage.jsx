@@ -1,6 +1,5 @@
 import { MagnifyingGlass, Plus, CaretDown } from '@phosphor-icons/react';
-import { PLAYER } from '../../shared/player';
-import { INITIAL_GAMES, RECENTLY_PLAYED, SORT_OPTIONS } from './data/homeData';
+import { useLibraryData, useProfile } from '../../app/providers/AppDataProvider';
 import { useHomeFilters } from './hooks/useHomeFilters';
 import LevelBadge from './components/LevelBadge';
 import RecentCard from './components/RecentCard';
@@ -8,6 +7,14 @@ import LibraryCard from './components/LibraryCard';
 import FilterPanel from './components/FilterPanel';
 
 export default function HomePage() {
+  const profile = useProfile();
+  const {
+    games,
+    recentGames,
+    sortOptions,
+    genreFilters: availableGenres,
+    storeFilters: availableStores,
+  } = useLibraryData();
   const {
     search,
     setSearch,
@@ -23,64 +30,64 @@ export default function HomePage() {
     toggleStore,
     clearFilters,
     filteredGames,
-  } = useHomeFilters();
+  } = useHomeFilters(games);
 
-  const sortLabel = SORT_OPTIONS.find((option) => option.value === sortValue)?.label;
+  const sortLabel = sortOptions.find((option) => option.value === sortValue)?.label;
 
   return (
     <div className="text-white">
-      <div className="flex items-start justify-between mb-6">
+      <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Welcome back (Display name)!</h1>
-          <p className="text-zinc-400 mt-1">Continue your gaming journey</p>
+          <h1 className="text-2xl font-bold">Welcome back {profile.displayName}!</h1>
+          <p className="mt-1 text-zinc-400">Continue your gaming journey</p>
         </div>
-        <LevelBadge level={PLAYER.level} currentXP={PLAYER.currentXP} maxXP={PLAYER.maxXP} />
+        <LevelBadge level={profile.level} currentXP={profile.currentXP} maxXP={profile.maxXP} />
       </div>
 
-      <h2 className="text-lg font-semibold mb-1">Recently Played</h2>
-      <p className="text-zinc-500 text-sm mb-4">Pick up where you left off</p>
+      <h2 className="mb-1 text-lg font-semibold">Recently Played</h2>
+      <p className="mb-4 text-sm text-zinc-500">Pick up where you left off</p>
 
-      {RECENTLY_PLAYED.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-8 text-center mb-8">
+      {recentGames.length === 0 ? (
+        <div className="mb-8 flex flex-col items-center justify-center py-8 text-center">
           <p className="text-zinc-500">No recent games</p>
-          <p className="text-zinc-600 text-sm mt-1">Add games to your library to get started</p>
+          <p className="mt-1 text-sm text-zinc-600">Add games to your library to get started</p>
         </div>
       ) : (
-        <div className="grid grid-cols-5 gap-3 mb-8">
-          {RECENTLY_PLAYED.map((game) => (
+        <div className="mb-8 grid grid-cols-5 gap-3">
+          {recentGames.map((game) => (
             <RecentCard key={game.id} {...game} />
           ))}
         </div>
       )}
 
-      <div className="flex items-start justify-between mb-4">
+      <div className="mb-4 flex items-start justify-between">
         <div>
           <h2 className="text-lg font-semibold">My Library</h2>
-          <p className="text-zinc-500 text-sm">{INITIAL_GAMES.length} games</p>
+          <p className="text-sm text-zinc-500">{games.length} games</p>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="relative">
             <button
               onClick={() => setSortOpen(!sortOpen)}
-              className="card flex items-center gap-2 px-4 py-2 text-sm text-zinc-300 hover:text-white transition-colors whitespace-nowrap"
+              className="card flex items-center gap-2 whitespace-nowrap px-4 py-2 text-sm text-zinc-300 transition-colors hover:text-white"
             >
-              Sort by — {sortLabel}
+              Sort by - {sortLabel}
               <CaretDown size={12} />
             </button>
             {sortOpen && (
-              <div className="absolute top-full mt-1 right-0 card w-52 z-20 py-1">
-                {SORT_OPTIONS.map((option) => (
+              <div className="card absolute top-full right-0 z-20 mt-1 w-52 py-1">
+                {sortOptions.map((option) => (
                   <button
                     key={option.value}
                     onClick={() => {
                       setSortValue(option.value);
                       setSortOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 text-sm transition-colors ${
+                    className={`w-full px-4 py-2 text-left text-sm transition-colors ${
                       sortValue === option.value
-                        ? 'text-white font-semibold'
-                        : 'text-zinc-400 hover:text-white hover:bg-[#1f1f33]'
+                        ? 'font-semibold text-white'
+                        : 'text-zinc-400 hover:bg-[#1f1f33] hover:text-white'
                     }`}
                   >
                     {option.label}
@@ -90,30 +97,30 @@ export default function HomePage() {
             )}
           </div>
 
-          <div className="card flex items-center gap-2 px-3 py-2 w-64">
-            <MagnifyingGlass size={16} className="text-zinc-500 shrink-0" />
+          <div className="card flex w-64 items-center gap-2 px-3 py-2">
+            <MagnifyingGlass size={16} className="shrink-0 text-zinc-500" />
             <input
               type="text"
               placeholder="Search games..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="bg-transparent text-sm text-white placeholder-zinc-500 outline-none w-full"
+              onChange={(event) => setSearch(event.target.value)}
+              className="w-full bg-transparent text-sm text-white outline-none placeholder-zinc-500"
             />
           </div>
 
-          <button className="btn-primary flex items-center gap-2 px-4 py-2 text-sm whitespace-nowrap">
+          <button className="btn-primary flex items-center gap-2 whitespace-nowrap px-4 py-2 text-sm">
             <Plus size={16} weight="bold" />
             Add Game
           </button>
         </div>
       </div>
 
-      <div className="flex gap-6 items-start">
+      <div className="flex items-start gap-6">
         <div className="flex-1">
           {filteredGames.length === 0 ? (
-            <div className="flex flex-col items-center justify-center mt-24 text-center">
-              <p className="text-zinc-500 text-lg font-medium">No games here yet</p>
-              <p className="text-zinc-600 text-sm mt-1">
+            <div className="mt-24 flex flex-col items-center justify-center text-center">
+              <p className="text-lg font-medium text-zinc-500">No games here yet</p>
+              <p className="mt-1 text-sm text-zinc-600">
                 Click <span className="text-zinc-400">+ Add Game</span> to get started
               </p>
             </div>
@@ -127,8 +134,10 @@ export default function HomePage() {
         </div>
 
         <FilterPanel
-          genreFilters={genreFilters}
-          storeFilters={storeFilters}
+          genres={availableGenres}
+          stores={availableStores}
+          selectedGenres={genreFilters}
+          selectedStores={storeFilters}
           installedOnly={installedOnly}
           onGenreToggle={toggleGenre}
           onStoreToggle={toggleStore}

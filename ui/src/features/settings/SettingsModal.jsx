@@ -21,15 +21,15 @@ export default function SettingsModal({ onClose }) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}
+      style={{ backgroundColor: 'rgba(10,10,20,0.55)', backdropFilter: 'blur(10px)' }}
       onClick={onClose}
     >
       <div
-        className="flex rounded-xl overflow-hidden w-[820px] max-h-[80vh]"
-        style={{ backgroundColor: '#141422' }}
+        className="flex max-h-[82vh] w-[1000px] overflow-hidden rounded-[22px] border border-[#25253c]"
+        style={{ backgroundColor: '#10101b' }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="w-44 shrink-0 border-r border-[#2a2a40] p-4 flex flex-col gap-1">
+        <div className="flex w-44 shrink-0 flex-col gap-1 border-r border-[#25253d] bg-[#19192b] p-4">
           {SETTINGS_TABS.map((tab) => (
             <SettingsTabButton
               key={tab}
@@ -39,7 +39,7 @@ export default function SettingsModal({ onClose }) {
             />
           ))}
         </div>
-        <div className="flex-1 p-6 overflow-y-auto relative">
+        <div className="relative flex-1 overflow-y-auto p-7">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"

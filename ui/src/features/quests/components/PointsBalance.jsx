@@ -3,13 +3,14 @@ export default function PointsBalance({ points }) {
     <div
       className="flex items-center gap-2 px-4 py-2 rounded-xl"
       style={{
-        backgroundColor: 'var(--color-surface-light)',
-        border: '1px solid var(--color-border)',
+        backgroundColor: 'var(--color-primary)',
+        border: '1px solid #6f74ff',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
       }}
     >
-      <img src="/Points.png" width={18} height={18} style={{ objectFit: 'contain' }} />
+      <img src="/Icons/Points.png" width={18} height={18} style={{ objectFit: 'contain' }} />
       <span
-        className="font-bold text-white tracking-wide"
+        className="font-bold tracking-wide text-[#d6b3ff]"
         style={{ fontSize: '15px', fontVariantNumeric: 'tabular-nums' }}
       >
         {points.toLocaleString()}

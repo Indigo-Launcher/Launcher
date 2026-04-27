@@ -2,23 +2,25 @@ import ChatView from './components/ChatView';
 import AddFriendsPanel from './components/AddFriendsPanel';
 import FriendsSidebarPanel from './components/FriendsSidebarPanel';
 import YourFriendsPanel from './components/YourFriendsPanel';
+import { useFriendsData } from '../../app/providers/AppDataProvider';
 import { useFriendsPageState } from './hooks/useFriendsPageState';
-import {
-  chats,
-  getAllFriends,
-  groupChats,
-  mockRequests,
-  mockSearchResults,
-  offlineFriends,
-  onlineFriends,
-} from './data/friendsData';
 
 export default function FriendsPage() {
-  const { view, activeChatId, activeFriend, selectView, selectChat } = useFriendsPageState();
-  const allFriends = getAllFriends();
+  const {
+    allFriends,
+    chats,
+    chatParticipants,
+    groupChats,
+    mockRequests,
+    mockSearchResults,
+    offlineFriends,
+    onlineFriends,
+  } = useFriendsData();
+  const { view, activeChatId, activeFriend, selectView, selectChat } =
+    useFriendsPageState(chatParticipants);
 
   return (
-    <div className="flex h-full -m-8 text-white">
+    <div className="flex h-full -m-5 text-white">
       <FriendsSidebarPanel
         view={view}
         activeChatId={activeChatId}
