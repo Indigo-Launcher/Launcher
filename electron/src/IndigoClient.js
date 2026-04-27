@@ -64,8 +64,9 @@ class IndigoClient {
          */
         this.pendingApps = [];
 
-        ipcMain.on('supported-launchers', () => this.supportedLaunchers);
-        ipcMain.on('scan', (event, requestedLaunchers) => this.scan(requestedLaunchers));
+        // needs ipcMain.handle (not on) so the result actually comes back to the renderer
+        ipcMain.handle('supported-launchers', () => this.supportedLaunchers);
+        ipcMain.handle('scan', (event, requestedLaunchers) => this.scan(requestedLaunchers));
         ipcMain.on('import', (event, apps) => this.importPending(apps));
         ipcMain.on('launch-app', (event, appId) => this.launchApp(appId));
 
@@ -165,7 +166,7 @@ class IndigoClient {
 
         // Window control handlers
         ipcMain.on('window-minimize', () => window.minimize());
-        ipcMain.on('window-maximize', () => window.isMaximized() ? window.maximize() : window.minimize());
+        ipcMain.on('window-maximize', () => window.isMaximized() ? window.restore() : window.maximize());
         ipcMain.on('window-close', () => window.close());
 
         // loads the vite dev server while we're in dev

@@ -19,7 +19,7 @@ contextBridge.exposeInMainWorld('api', {
    *
    * @param {string[]} requestedLaunchers list of unique launcher names to scan
    */
-  scan: async (requestedLaunchers) => ipcRenderer.send('scan', requestedLaunchers),
+  scan: async (requestedLaunchers) => ipcRenderer.invoke('scan', requestedLaunchers),
   /**
    * Import a set of apps by their ids
    *

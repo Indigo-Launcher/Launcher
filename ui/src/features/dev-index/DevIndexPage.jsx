@@ -40,7 +40,7 @@ function PageGrid({ pages }) {
 
 export default function Index() {
   return (
-    <div className="text-white max-w-3xl">
+    <div className="text-white max-w-3xl p-8">
       <h1 className="text-2xl font-bold mb-1">Dev Page Index</h1>
       <p className="text-zinc-500 text-sm mb-8">Navigate to any page for development and testing</p>
 
