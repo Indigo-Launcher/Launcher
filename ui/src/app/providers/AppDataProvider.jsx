@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { Binoculars, ClockCounterClockwise, Trophy } from '@phosphor-icons/react';
 import { PLAYER as MOCK_PLAYER } from '../mock-data/player';
 import { electronClient } from '../services/electronClient';
+import { getGames, getQuests, getAchievements } from '../services/apiClient';
 import { GENRE_FILTERS, INITIAL_GAMES, RECENTLY_PLAYED, SORT_OPTIONS, STORE_FILTERS } from '../../features/home/data/homeData';
 import {
   chats,
@@ -33,6 +35,64 @@ const MOCK_GAMES_BY_TITLE = new Map(
 );
 
 const AppDataContext = createContext(null);
+
+// maps a quest type string to a phosphor icon component
+// API just stores a plain text type, so we do a rough keyword match
+function iconForQuestType(type) {
+  const t = (type || '').toLowerCase();
+  if (t.includes('explore') || t.includes('genre')) return Binoculars;
+  if (t.includes('marathon') || t.includes('session') || t.includes('rediscover')) return ClockCounterClockwise;
+  return Trophy; // fallback for anything we don't recognise yet
+}
+
+// API game shape → UI game shape
+// total_playtime comes back in seconds from the API
+function normalizeGame(g) {
+  let tags = [];
+  try {
+    tags = JSON.parse(g.tags || '[]');
+  } catch (_) {
+    // tags field is malformed somehow, just leave it empty
+  }
+
+  const knownPlatforms = ['Steam', 'Epic', 'GOG', 'Battle.net', 'Xbox'];
+  const platform = tags.find((t) => knownPlatforms.includes(t)) || 'Unknown';
+
+  // "Epic" in tags but "Epic Games" in the store filter list
+  const storeMap = { Steam: 'Steam', Epic: 'Epic Games', GOG: 'GOG', 'Battle.net': 'Battle.net', Xbox: 'Xbox' };
+  const store = storeMap[platform] || platform;
+
+  // TODO: API doesn't return genre separately yet, pulling from tags as best guess
+  const genre = tags.find((t) => GENRE_FILTERS.includes(t)) || 'Unknown';
+
+  const hrs = ((g.total_playtime || 0) / 3600).toFixed(1);
+
+  return {
+    id: String(g.id),
+    title: g.name,
+    hours: `${hrs}h`,
+    platform,
+    store,
+    genre,
+    installed: true, // if it's in the library it's installed as far as the UI cares
+    cover: g.cover_path || null,
+    last_played: g.last_played || null,
+  };
+}
+
+// API quest shape → UI quest shape
+function normalizeQuest(q) {
+  return {
+    id: String(q.id),
+    title: q.description, // API has no separate title field, description doubles up
+    description: q.description,
+    progress: q.completed ? 100 : 0,
+    goal: 100,
+    xp: q.xp_reward,
+    points: 0, // TODO: points system isn't in the API yet
+    Icon: iconForQuestType(q.type),
+  };
+}
 
 function readStoredState(key, fallback) {
   try {
@@ -91,7 +151,32 @@ function buildFallbackLibraryGames() {
 }
 
 export function AppDataProvider({ children }) {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
+
+  // null = haven't fetched yet, [] = fetched but empty
+  const [apiGames, setApiGames] = useState(null);
+  const [apiQuests, setApiQuests] = useState(null);
+  const [apiAchievements, setApiAchievements] = useState(null);
+
+  useEffect(() => {
+    if (!token) {
+      setApiGames(null);
+      setApiQuests(null);
+      setApiAchievements(null);
+      return;
+    }
+
+    Promise.all([getGames(token), getQuests(token), getAchievements(token)])
+      .then(([gamesRes, questsRes, achievementsRes]) => {
+        setApiGames(gamesRes.games || []);
+        setApiQuests(questsRes.quests || []);
+        setApiAchievements(achievementsRes.achievements || []);
+      })
+      .catch((err) => {
+        console.error('Failed to load data from API:', err);
+      });
+  }, [token]);
+
   const [connections, setConnections] = useState(() =>
     readStoredState(
       CONNECTIONS_STORAGE_KEY,
@@ -114,9 +199,40 @@ export function AppDataProvider({ children }) {
     localStorage.setItem(ONBOARDING_STORAGE_KEY, JSON.stringify(onboardingState));
   }, [onboardingState]);
 
-  const profile = useMemo(() => buildProfile(user), [user]);
-  const libraryGames = useMemo(() => buildFallbackLibraryGames(), []);
-  const recentGames = useMemo(() => libraryGames.slice(0, 4), [libraryGames]);
+  const profile = useMemo(() => {
+    const base = buildProfile(user);
+    // update achievements count from real API data if we have it
+    if (apiAchievements) {
+      base.achievements = apiAchievements.filter((a) => a.unlocked).length;
+    }
+    return base;
+  }, [user, apiAchievements]);
+
+  const libraryGames = useMemo(() => {
+    if (apiGames) return apiGames.map(normalizeGame);
+    return buildFallbackLibraryGames();
+  }, [apiGames]);
+
+  const recentGames = useMemo(() => {
+    if (apiGames) {
+      return [...libraryGames]
+        .filter((g) => g.last_played)
+        .sort((a, b) => new Date(b.last_played) - new Date(a.last_played))
+        .slice(0, 5);
+    }
+    return libraryGames.slice(0, 4);
+  }, [apiGames, libraryGames]);
+
+  const todaysQuests = useMemo(() => {
+    if (!apiQuests) return TODAYS_QUESTS;
+    return apiQuests.filter((q) => !q.completed).map(normalizeQuest);
+  }, [apiQuests]);
+
+  const completedQuests = useMemo(() => {
+    if (!apiQuests) return COMPLETED_QUESTS;
+    return apiQuests.filter((q) => q.completed).map(normalizeQuest);
+  }, [apiQuests]);
+
   const value = useMemo(() => {
     const allFriends = getAllFriends();
     const chatParticipants = [...onlineFriends, ...offlineFriends, ...chats];
@@ -203,8 +319,8 @@ export function AppDataProvider({ children }) {
         chatParticipants,
       },
       quests: {
-        todaysQuests: TODAYS_QUESTS,
-        completedQuests: COMPLETED_QUESTS,
+        todaysQuests,
+        completedQuests,
         questStats: QUEST_STATS,
       },
       connections: {
@@ -226,7 +342,7 @@ export function AppDataProvider({ children }) {
         resetScannedGames,
       },
     };
-  }, [connections, libraryGames, onboardingState, profile, recentGames]);
+  }, [completedQuests, connections, libraryGames, onboardingState, profile, recentGames, todaysQuests]);
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;
 }

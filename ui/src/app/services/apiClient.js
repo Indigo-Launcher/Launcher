@@ -42,3 +42,23 @@ export function getCurrentUser(token) {
     },
   });
 }
+
+export function getGames(token) {
+  return request('/games', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// defaults to today if no date passed
+export function getQuests(token, date) {
+  const path = date ? `/quests?date=${date}` : '/quests';
+  return request(path, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+export function getAchievements(token) {
+  return request('/achievements', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
