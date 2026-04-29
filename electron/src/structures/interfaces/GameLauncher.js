@@ -61,7 +61,7 @@ class GameLauncher {
    * @returns {Promise<Set<AppManifest>>}
    */
   async scan() {
-      if (!this.canScan()) {
+      if (!(await this.canScan())) {
           throw new Error(`Cannot import game files for ${this.name} Launcher.`);
       }
 

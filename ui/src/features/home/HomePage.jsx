@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { MagnifyingGlass, Plus, CaretDown } from '@phosphor-icons/react';
 import { useLibraryData, useProfile } from '../../app/providers/AppDataProvider';
 import { useHomeFilters } from './hooks/useHomeFilters';
@@ -5,8 +6,10 @@ import LevelBadge from './components/LevelBadge';
 import RecentCard from './components/RecentCard';
 import LibraryCard from './components/LibraryCard';
 import FilterPanel from './components/FilterPanel';
+import AddGameModal from './components/AddGameModal';
 
 export default function HomePage() {
+  const [addModalOpen, setAddModalOpen] = useState(false);
   const profile = useProfile();
   const {
     games,
@@ -14,6 +17,8 @@ export default function HomePage() {
     sortOptions,
     genreFilters: availableGenres,
     storeFilters: availableStores,
+    addGame,
+    searchGameMetadata,
   } = useLibraryData();
   const {
     search,
@@ -108,7 +113,10 @@ export default function HomePage() {
             />
           </div>
 
-          <button className="btn-primary flex items-center gap-2 whitespace-nowrap px-4 py-2 text-sm">
+          <button
+            onClick={() => setAddModalOpen(true)}
+            className="btn-primary flex items-center gap-2 whitespace-nowrap px-4 py-2 text-sm"
+          >
             <Plus size={16} weight="bold" />
             Add Game
           </button>
@@ -145,6 +153,16 @@ export default function HomePage() {
           onClear={clearFilters}
         />
       </div>
+
+      {addModalOpen && (
+        <AddGameModal
+          genres={availableGenres}
+          stores={availableStores}
+          onClose={() => setAddModalOpen(false)}
+          onSave={addGame}
+          onSearch={searchGameMetadata}
+        />
+      )}
     </div>
   );
 }

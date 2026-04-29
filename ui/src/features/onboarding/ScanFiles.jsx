@@ -1,8 +1,16 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Folder, DotsThreeVertical } from '@phosphor-icons/react';
-import { useOnboardingData } from '../../app/providers/AppDataProvider';
+import { useLibraryData, useOnboardingData } from '../../app/providers/AppDataProvider';
 import OnboardingLayout from './components/OnboardingLayout';
+
+function getGameKeys(scannedGames) {
+  if (!scannedGames) return [];
+
+  return Object.entries(scannedGames).flatMap(([platform, games]) =>
+    games.map((game) => `${platform}:${game}`)
+  );
+}
 
 export default function ScanFiles() {
   const navigate = useNavigate();
@@ -15,17 +23,52 @@ export default function ScanFiles() {
     scanGames,
     updateScanPath,
   } = useOnboardingData();
+  const { importScannedGames } = useLibraryData();
   const [paths, setPaths] = useState(scanPaths);
   const [editingId, setEditingId] = useState(null);
   const [menuOpen, setMenuOpen] = useState(null);
+  const [selectedGames, setSelectedGames] = useState(() => getGameKeys(scannedGames));
+  const [importing, setImporting] = useState(false);
+  const [error, setError] = useState('');
 
   async function handleScan() {
-    await scanGames(selectedPlatforms);
+    const games = await scanGames(selectedPlatforms);
+    setSelectedGames(getGameKeys(games));
   }
 
   function handlePathChange(id, value) {
     setPaths((prev) => prev.map((entry) => (entry.id === id ? { ...entry, path: value } : entry)));
     updateScanPath(id, value);
+  }
+
+  function toggleGame(key) {
+    setSelectedGames((current) =>
+      current.includes(key) ? current.filter((item) => item !== key) : [...current, key]
+    );
+  }
+
+  async function continueAfterImport(allGames) {
+    const gamesToImport = allGames
+      .filter((entry) => selectedGames.includes(entry.key))
+      .map((entry) => ({
+        name: entry.game,
+        platform: entry.platform,
+        store: entry.platform,
+        genre: 'Unknown',
+      }));
+
+    setError('');
+    setImporting(true);
+    try {
+      if (gamesToImport.length) {
+        await importScannedGames(gamesToImport);
+      }
+      navigate('/onboarding/genres');
+    } catch (err) {
+      setError(err.message || 'Could not import games');
+    } finally {
+      setImporting(false);
+    }
   }
 
   if (scannedGames) {
@@ -63,7 +106,8 @@ export default function ScanFiles() {
                       </span>
                       <input
                         type="checkbox"
-                        defaultChecked
+                        checked={selectedGames.includes(`${platform}:${game}`)}
+                        onChange={() => toggleGame(`${platform}:${game}`)}
                         className="h-4 w-4 cursor-pointer rounded accent-[var(--color-primary)]"
                       />
                     </label>
@@ -75,15 +119,17 @@ export default function ScanFiles() {
         )}
 
         <p className="mb-6 text-xs text-zinc-600">You can edit and add more later</p>
+        {error && <p className="mb-4 text-sm text-red-400">{error}</p>}
         <div className="flex items-center gap-4">
           <button onClick={resetScannedGames} className="btn-ghost px-8 py-3 text-sm">
             Scan again
           </button>
           <button
-            onClick={() => navigate('/onboarding/genres')}
-            className="btn-primary px-12 py-3 text-sm"
+            onClick={() => continueAfterImport(allGames)}
+            disabled={importing}
+            className="btn-primary px-12 py-3 text-sm disabled:opacity-50"
           >
-            Continue {'->'}
+            {importing ? 'Importing...' : 'Continue ->'}
           </button>
         </div>
       </OnboardingLayout>

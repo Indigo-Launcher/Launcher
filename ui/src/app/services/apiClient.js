@@ -1,12 +1,14 @@
 const API_URL = 'http://localhost:3001';
 
 async function request(path, options = {}) {
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(options.headers ?? {}),
+  };
+
   const response = await fetch(`${API_URL}${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options.headers ?? {}),
-    },
     ...options,
+    headers,
   });
 
   const data = await response.json().catch(() => ({}));
@@ -21,10 +23,10 @@ async function request(path, options = {}) {
   return data;
 }
 
-export function register({ username, password }) {
+export function register({ username, password, email }) {
   return request('/auth/register', {
     method: 'POST',
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ username, password, email }),
   });
 }
 
@@ -59,6 +61,20 @@ export function getQuests(token, date) {
 
 export function getAchievements(token) {
   return request('/achievements', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+export function createGame(token, game) {
+  return request('/games', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(game),
+  });
+}
+
+export function searchIgdb(token, name) {
+  return request(`/igdb/search?name=${encodeURIComponent(name)}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }

@@ -65,7 +65,7 @@ class IndigoClient {
         this.pendingApps = [];
 
         // needs ipcMain.handle (not on) so the result actually comes back to the renderer
-        ipcMain.handle('supported-launchers', () => this.supportedLaunchers);
+        ipcMain.handle('supported-launchers', () => this.supportedLaunchers());
         ipcMain.handle('scan', (event, requestedLaunchers) => this.scan(requestedLaunchers));
         ipcMain.on('import', (event, apps) => this.importPending(apps));
         ipcMain.on('launch-app', (event, appId) => this.launchApp(appId));
@@ -82,13 +82,19 @@ class IndigoClient {
      *
      * @returns {{ name: string; scan_directory: string; }[]}
      */
-    get supportedLaunchers() {
-        return this.ALL_LAUNCHERS.filter(launcher => launcher.canScan()).map(launcher => {
-            return {
+    async supportedLaunchers() {
+        const supported = [];
+
+        for (const launcher of this.ALL_LAUNCHERS) {
+            if (!(await launcher.canScan())) continue;
+
+            supported.push({
                 name: launcher.name,
                 scan_directory: launcher.dataPath,
-            };
-        });
+            });
+        }
+
+        return supported;
     }
 
     /**
@@ -103,7 +109,14 @@ class IndigoClient {
             if (!this.LAUNCHERS_BY_ID.has(launcherId)) continue;
 
             const launcher = await this.LAUNCHERS_BY_ID.get(launcherId);
-            (await launcher.scan()).forEach((manifest) => {
+            const manifests = await launcher.scan().catch((err) => {
+                console.error(err);
+                return [];
+            });
+
+            if (!manifests) continue;
+
+            manifests.forEach((manifest) => {
                 this.pendingApps.push(manifest);
             });
         }
