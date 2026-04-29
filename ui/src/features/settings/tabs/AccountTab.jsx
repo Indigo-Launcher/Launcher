@@ -11,9 +11,10 @@ const INITIAL_FORM = {
 };
 
 export default function AccountTab() {
-  const { logout } = useAuth();
+  const { logout, updateLocalProfile } = useAuth();
   const profile = useProfile();
   const [formValues, setFormValues] = useState(INITIAL_FORM);
+  const [savedMessage, setSavedMessage] = useState('');
 
   useEffect(() => {
     setFormValues({
@@ -25,6 +26,25 @@ export default function AccountTab() {
 
   function updateField(field, value) {
     setFormValues((prev) => ({ ...prev, [field]: value }));
+    setSavedMessage('');
+  }
+
+  function resetForm() {
+    setFormValues({
+      displayName: profile.displayName,
+      email: profile.email,
+      password: '',
+    });
+    setSavedMessage('');
+  }
+
+  function saveLocalChanges() {
+    // Account edits are local for now. The API doesn't have profile update routes yet.
+    updateLocalProfile({
+      displayName: formValues.displayName || profile.displayName,
+      email: formValues.email,
+    });
+    setSavedMessage('Saved locally for this device');
   }
 
   return (
@@ -60,15 +80,23 @@ export default function AccountTab() {
               placeholder={placeholder}
               maxLength={maxLength}
               value={formValues[key]}
+              disabled={key === 'password'}
               onChange={(e) => updateField(key, e.target.value)}
-              className="w-72 rounded-lg border border-[#33324f] bg-[#18182b] px-3 py-2 text-sm text-white outline-none transition-colors focus:border-indigo-500"
+              className="w-72 rounded-lg border border-[#33324f] bg-[#18182b] px-3 py-2 text-sm text-white outline-none transition-colors focus:border-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
         ))}
 
+        <p className="mt-4 text-xs text-zinc-500">
+          Display name and email edits are saved locally in this build. Password changes are not available yet.
+        </p>
+        {savedMessage && <p className="mt-2 text-xs text-green-400">{savedMessage}</p>}
+
         <div className="mt-4 flex justify-end gap-3 border-t border-[#25253d] pt-4">
-          <button className="btn-ghost px-4 py-2 text-sm">Cancel</button>
-          <button className="btn-primary px-4 py-2 text-sm">Submit Changes</button>
+          <button onClick={resetForm} className="btn-ghost px-4 py-2 text-sm">Cancel</button>
+          <button onClick={saveLocalChanges} className="btn-primary px-4 py-2 text-sm">
+            Save Locally
+          </button>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { getCurrentUser, login as loginRequest, register as registerRequest } from '../services/apiClient';
 
 const TOKEN_STORAGE_KEY = 'token';
@@ -108,6 +108,13 @@ export function AuthProvider({ children }) {
     setUser(null);
   }
 
+  const updateLocalProfile = useCallback((profile) => {
+    if (!user?.username) return;
+
+    storeUserProfile(user.username, profile);
+    setUser((current) => mergeStoredProfile({ ...current, ...profile }));
+  }, [user]);
+
   const value = useMemo(
     () => ({
       token,
@@ -117,8 +124,9 @@ export function AuthProvider({ children }) {
       login: (credentials) => completeAuth(loginRequest, credentials),
       signup: (credentials) => completeAuth(registerRequest, credentials),
       logout,
+      updateLocalProfile,
     }),
-    [isLoading, token, user]
+    [isLoading, token, updateLocalProfile, user]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

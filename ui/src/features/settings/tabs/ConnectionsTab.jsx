@@ -6,7 +6,9 @@ export default function ConnectionsTab() {
   return (
     <div>
       <h2 className="mb-1 text-[40px] font-bold leading-none text-white">Connections</h2>
-      <p className="mb-6 text-[14px] text-zinc-500">Manage your connections</p>
+      <p className="mb-6 text-[14px] text-zinc-500">
+        Choose which launchers Indigo should include when scanning for games.
+      </p>
 
       <div className="flex flex-col gap-2.5">
         {items.map((connection) => {
@@ -26,13 +28,17 @@ export default function ConnectionsTab() {
                 <div>
                   <p className="text-sm font-semibold text-white">{connection.label}</p>
                   <p className="text-xs text-zinc-500">
-                    {linked ? 'XX Games synced - Updated XX days ago' : 'Game library sync'}
+                    {linked ? 'Included in library scans' : 'Not included in scans'}
                   </p>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                {linked && <button className="btn-ghost px-3 py-1.5 text-xs">SYNC</button>}
+                {linked && (
+                  <button disabled className="btn-ghost cursor-not-allowed px-3 py-1.5 text-xs opacity-50">
+                    SYNC
+                  </button>
+                )}
                 <button
                   onClick={() => toggleConnection(connection.id)}
                   className={`rounded-lg px-4 py-1.5 text-xs font-semibold ${

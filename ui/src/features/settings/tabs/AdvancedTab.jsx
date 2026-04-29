@@ -1,6 +1,6 @@
 const DATA_ROWS = [
-  ['Export Library', 'Export JSON'],
-  ['Clear All Data', 'Reset'],
+  ['Export Library', 'Not available'],
+  ['Clear All Data', 'Not available'],
 ];
 
 const ABOUT_ROWS = [
@@ -24,11 +24,17 @@ export default function AdvancedTab() {
             }`}
           >
             <span className="text-sm text-white">{label}</span>
-            <button className={action === 'Reset' ? 'btn-danger px-4 py-2 text-sm' : 'btn-ghost px-4 py-2 text-sm'}>
+            <button
+              disabled
+              className="cursor-not-allowed rounded-lg border border-[#33324f] px-4 py-2 text-sm text-zinc-500"
+            >
               {action}
             </button>
           </div>
         ))}
+        <p className="mt-3 border-t border-[#25253d] pt-4 text-xs text-zinc-500">
+          Export and reset tools are planned, but they are not included in this build.
+        </p>
       </div>
 
       <h3 className="mb-3 text-sm font-semibold text-white">About</h3>
