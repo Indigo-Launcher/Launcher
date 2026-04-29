@@ -17,6 +17,7 @@ import { COMPLETED_QUESTS, QUEST_STATS, TODAYS_QUESTS } from '../../features/que
 import { CONNECTIONS } from '../../features/settings/data/settingsConfig';
 import { useAuth } from './AuthProvider';
 import { coverFromScan } from './gamePayload';
+import { removeDuplicateGames } from './libraryUtils';
 
 const CONNECTIONS_STORAGE_KEY = 'indigo-connections';
 const ONBOARDING_STORAGE_KEY = 'indigo-onboarding';
@@ -252,7 +253,7 @@ export function AppDataProvider({ children }) {
   }, [user, apiAchievements]);
 
   const libraryGames = useMemo(() => {
-    if (apiGames) return apiGames.map(normalizeGame);
+    if (apiGames) return removeDuplicateGames(apiGames.map(normalizeGame));
     return buildFallbackLibraryGames();
   }, [apiGames]);
 
