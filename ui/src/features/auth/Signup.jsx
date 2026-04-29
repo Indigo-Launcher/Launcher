@@ -27,7 +27,7 @@ export default function Signup() {
 
   return (
     <div
-      className="iris-glow h-screen flex flex-col items-center justify-center relative overflow-hidden"
+      className="iris-glow h-full flex flex-col items-center justify-center relative overflow-hidden"
       style={{ backgroundColor: '#0a0a14' }}
     >
       <div className="relative z-10 flex flex-col items-center w-full">

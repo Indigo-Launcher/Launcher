@@ -40,7 +40,7 @@ function ProtectedRoute({ children }) {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0a0a14] text-zinc-400">
+      <div className="flex h-full items-center justify-center bg-[#0a0a14] text-zinc-400">
         Loading...
       </div>
     );
@@ -54,7 +54,7 @@ function PublicOnlyRoute({ children }) {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0a0a14] text-zinc-400">
+      <div className="flex h-full items-center justify-center bg-[#0a0a14] text-zinc-400">
         Loading...
       </div>
     );

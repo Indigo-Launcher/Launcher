@@ -1,38 +1,41 @@
+const steamCover = (appId) =>
+  `https://cdn.akamai.steamstatic.com/steam/apps/${appId}/library_600x900.jpg`;
+
 export const RECENTLY_PLAYED = [
   {
     id: 'cyberpunk-2077',
     title: 'Cyberpunk 2077',
     hours: '127.4h',
     platform: 'Steam',
-    cover: '/Game Icons/CyberpunkIcon.png',
+    cover: steamCover(1091500),
   },
   {
     id: 'elden-ring',
     title: 'Elden Ring',
     hours: '89.2h',
     platform: 'Steam',
-    cover: '/Game Icons/EldenRingIcon-6.png',
+    cover: steamCover(1245620),
   },
   {
     id: 'hades',
     title: 'Hades',
     hours: '64.1h',
     platform: 'Epic',
-    cover: '/Game Icons/HadesIcon-9.png',
+    cover: steamCover(1145360),
   },
   {
     id: 'marvel-rivals',
     title: 'Marvel Rivals',
     hours: '45.6h',
     platform: 'Steam',
-    cover: '/Game Icons/MarvelRivalsIcon-9.png',
+    cover: steamCover(2767030),
   },
   {
     id: 'subnautica',
     title: 'Subnautica',
     hours: '32.7h',
     platform: 'Epic',
-    cover: '/Game Icons/SubnauticaIcon-5.png',
+    cover: steamCover(264710),
   },
 ];
 
@@ -45,7 +48,7 @@ export const INITIAL_GAMES = [
     store: 'Steam',
     genre: 'RPG',
     installed: true,
-    cover: '/Game Icons/CyberpunkIcon.png',
+    cover: steamCover(1091500),
   },
   {
     id: 'elden-ring',
@@ -55,7 +58,7 @@ export const INITIAL_GAMES = [
     store: 'Steam',
     genre: 'RPG',
     installed: true,
-    cover: '/Game Icons/EldenRingIcon-6.png',
+    cover: steamCover(1245620),
   },
   {
     id: 'hades',
@@ -65,7 +68,7 @@ export const INITIAL_GAMES = [
     store: 'Epic Games',
     genre: 'Action',
     installed: true,
-    cover: '/Game Icons/HadesIcon-9.png',
+    cover: steamCover(1145360),
   },
   {
     id: 'marvel-rivals',
@@ -75,7 +78,7 @@ export const INITIAL_GAMES = [
     store: 'Steam',
     genre: 'First Person Shooter',
     installed: true,
-    cover: '/Game Icons/MarvelRivalsIcon-9.png',
+    cover: steamCover(2767030),
   },
   {
     id: 'baldurs-gate-3',
@@ -85,7 +88,7 @@ export const INITIAL_GAMES = [
     store: 'GOG',
     genre: 'Adventure',
     installed: true,
-    cover: '/Game Icons/BaldursGateIcon-5.png',
+    cover: steamCover(1086940),
   },
   {
     id: 'subnautica',
@@ -95,7 +98,7 @@ export const INITIAL_GAMES = [
     store: 'Epic Games',
     genre: 'Exploration',
     installed: true,
-    cover: '/Game Icons/SubnauticaIcon-5.png',
+    cover: steamCover(264710),
   },
   {
     id: 'doom-eternal',
@@ -105,7 +108,7 @@ export const INITIAL_GAMES = [
     store: 'Steam',
     genre: 'First Person Shooter',
     installed: true,
-    cover: '/Game Icons/DoomEternalIcon-6.png',
+    cover: steamCover(782330),
   },
   {
     id: 'stardew-valley',
@@ -115,7 +118,7 @@ export const INITIAL_GAMES = [
     store: 'GOG',
     genre: 'Casual',
     installed: true,
-    cover: '/Game Icons/StardewValleyIcon-2.png',
+    cover: steamCover(413150),
   },
   {
     id: 'civilization-vi',
@@ -125,7 +128,7 @@ export const INITIAL_GAMES = [
     store: 'Steam',
     genre: 'Strategy',
     installed: true,
-    cover: '/Game Icons/CivVIIcon-9.png',
+    cover: steamCover(289070),
   },
   {
     id: 'alan-wake',
@@ -135,7 +138,7 @@ export const INITIAL_GAMES = [
     store: 'GOG',
     genre: 'Action',
     installed: true,
-    cover: '/Game Icons/AlanWakeIcon-7.png',
+    cover: steamCover(108710),
   },
   {
     id: 'dead-cells',
@@ -145,7 +148,7 @@ export const INITIAL_GAMES = [
     store: 'Steam',
     genre: 'Action',
     installed: true,
-    cover: '/Game Icons/DeadCellsIcon-5.png',
+    cover: steamCover(588650),
   },
   {
     id: 'terraria',
@@ -155,7 +158,7 @@ export const INITIAL_GAMES = [
     store: 'Steam',
     genre: 'Adventure',
     installed: true,
-    cover: '/Game Icons/TerrariaIcon-5.png',
+    cover: steamCover(105600),
   },
 ];
 

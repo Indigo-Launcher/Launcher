@@ -8,7 +8,7 @@ const STEPS = ['Welcome', 'Link', 'Scan', 'Genres'];
 export default function OnboardingLayout({ currentStep, stepLabel, children }) {
   return (
     <div
-      className="iris-glow h-screen flex relative overflow-hidden"
+      className="iris-glow h-full flex relative overflow-hidden"
       style={{ backgroundColor: '#0a0a14' }}
     >
       {/* Left step tracker */}

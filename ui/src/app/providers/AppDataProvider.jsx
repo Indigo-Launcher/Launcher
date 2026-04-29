@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { Binoculars, ClockCounterClockwise, Trophy } from '@phosphor-icons/react';
 import { PLAYER as MOCK_PLAYER } from '../mock-data/player';
 import { electronClient } from '../services/electronClient';
-import { getGames, getQuests, getAchievements } from '../services/apiClient';
+import { createGame, getGames, getQuests, getAchievements, searchIgdb } from '../services/apiClient';
 import { GENRE_FILTERS, INITIAL_GAMES, RECENTLY_PLAYED, SORT_OPTIONS, STORE_FILTERS } from '../../features/home/data/homeData';
 import {
   chats,
@@ -30,6 +30,27 @@ const FALLBACK_SCANNED_GAMES = {
   'Epic Games': ['Hades', 'Subnautica'],
 };
 
+const SCAN_LAUNCHER_IDS = {
+  steam: 'steam',
+  epic: 'epic-games',
+  'epic-games': 'epic-games',
+};
+
+const SCAN_LABELS = {
+  steam: 'Steam',
+  'epic-games': 'Epic Games',
+};
+
+const STORE_TAGS = {
+  Steam: 'Steam',
+  'Epic Games': 'Epic',
+  GOG: 'GOG',
+  'Battle.net': 'Battle.net',
+  Ubisoft: 'Ubisoft',
+  EA: 'EA',
+  Xbox: 'Xbox',
+};
+
 const MOCK_GAMES_BY_TITLE = new Map(
   [...INITIAL_GAMES, ...RECENTLY_PLAYED].map((game) => [game.title.toLowerCase(), game])
 );
@@ -51,15 +72,15 @@ function normalizeGame(g) {
   let tags = [];
   try {
     tags = JSON.parse(g.tags || '[]');
-  } catch (_) {
+  } catch {
     // tags field is malformed somehow, just leave it empty
   }
 
-  const knownPlatforms = ['Steam', 'Epic', 'GOG', 'Battle.net', 'Xbox'];
+  const knownPlatforms = ['Steam', 'Epic', 'Epic Games', 'GOG', 'Battle.net', 'Ubisoft', 'EA', 'Xbox'];
   const platform = tags.find((t) => knownPlatforms.includes(t)) || 'Unknown';
 
   // "Epic" in tags but "Epic Games" in the store filter list
-  const storeMap = { Steam: 'Steam', Epic: 'Epic Games', GOG: 'GOG', 'Battle.net': 'Battle.net', Xbox: 'Xbox' };
+  const storeMap = { Steam: 'Steam', Epic: 'Epic Games', 'Epic Games': 'Epic Games', GOG: 'GOG', 'Battle.net': 'Battle.net', Ubisoft: 'Ubisoft', EA: 'EA', Xbox: 'Xbox' };
   const store = storeMap[platform] || platform;
 
   // TODO: API doesn't return genre separately yet, pulling from tags as best guess
@@ -117,7 +138,7 @@ function groupScannedGames(manifests) {
   if (!Array.isArray(manifests) || manifests.length === 0) return null;
 
   return manifests.reduce((groups, manifest) => {
-    const platform = manifest.game_launcher || 'Imported';
+    const platform = SCAN_LABELS[manifest.game_launcher] || manifest.game_launcher || 'Imported';
     if (!groups[platform]) groups[platform] = [];
     groups[platform].push(manifest.display_name || 'Unknown Game');
     return groups;
@@ -148,6 +169,19 @@ function buildFallbackLibraryGames() {
       };
     })
   );
+}
+
+function buildGamePayload(game) {
+  const store = game.store || game.platform || 'Imported';
+  const genre = game.genre || 'Unknown';
+  const tags = [STORE_TAGS[store] || store, genre].filter(Boolean);
+
+  return {
+    name: game.name || game.title || 'Unknown Game',
+    exe_path: game.exe_path || game.path || null,
+    cover_path: game.cover_path || game.cover || null,
+    tags: JSON.stringify(tags),
+  };
 }
 
 export function AppDataProvider({ children }) {
@@ -237,6 +271,41 @@ export function AppDataProvider({ children }) {
     const allFriends = getAllFriends();
     const chatParticipants = [...onlineFriends, ...offlineFriends, ...chats];
 
+    async function refreshLibrary() {
+      if (!token) return [];
+
+      const gamesRes = await getGames(token);
+      const games = gamesRes.games || [];
+      setApiGames(games);
+      return games;
+    }
+
+    async function addGame(game) {
+      if (!token) throw new Error('You need to be logged in to add games');
+
+      const response = await createGame(token, buildGamePayload(game));
+      setApiGames((current) => (current ? [...current, response.game] : [response.game]));
+      return normalizeGame(response.game);
+    }
+
+    async function importScannedGames(selectedGames) {
+      if (!token) throw new Error('You need to be logged in to import games');
+
+      const imported = [];
+      for (const game of selectedGames) {
+        const response = await createGame(token, buildGamePayload(game));
+        imported.push(response.game);
+      }
+
+      setApiGames((current) => [...(current || []), ...imported]);
+      return imported.map(normalizeGame);
+    }
+
+    async function searchGameMetadata(name) {
+      if (!token) throw new Error('You need to be logged in to search IGDB');
+      return searchIgdb(token, name);
+    }
+
     function toggleConnection(id) {
       setConnections((current) => {
         const next = { ...current, [id]: !current[id] };
@@ -276,7 +345,8 @@ export function AppDataProvider({ children }) {
     }
 
     async function scanGames(requestedLaunchers = onboardingState.selectedPlatforms) {
-      const manifests = await electronClient.scan(requestedLaunchers);
+      const launcherIds = requestedLaunchers.map((id) => SCAN_LAUNCHER_IDS[id] || id);
+      const manifests = await electronClient.scan(launcherIds);
       const groupedGames = groupScannedGames(manifests) ?? FALLBACK_SCANNED_GAMES;
 
       setOnboardingState((state) => ({
@@ -307,6 +377,10 @@ export function AppDataProvider({ children }) {
         sortOptions: SORT_OPTIONS,
         genreFilters: GENRE_FILTERS,
         storeFilters: STORE_FILTERS,
+        addGame,
+        importScannedGames,
+        refreshLibrary,
+        searchGameMetadata,
       },
       friends: {
         onlineFriends,
@@ -342,7 +416,16 @@ export function AppDataProvider({ children }) {
         resetScannedGames,
       },
     };
-  }, [completedQuests, connections, libraryGames, onboardingState, profile, recentGames, todaysQuests]);
+  }, [
+    completedQuests,
+    connections,
+    libraryGames,
+    onboardingState,
+    profile,
+    recentGames,
+    token,
+    todaysQuests,
+  ]);
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;
 }
