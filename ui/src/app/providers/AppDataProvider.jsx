@@ -16,6 +16,7 @@ import {
 import { COMPLETED_QUESTS, QUEST_STATS, TODAYS_QUESTS } from '../../features/quests/data/questsData';
 import { CONNECTIONS } from '../../features/settings/data/settingsConfig';
 import { useAuth } from './AuthProvider';
+import { coverFromScan } from './gamePayload';
 
 const CONNECTIONS_STORAGE_KEY = 'indigo-connections';
 const ONBOARDING_STORAGE_KEY = 'indigo-onboarding';
@@ -147,6 +148,7 @@ function groupScannedGames(manifests) {
       app_id: manifest.app_id,
       external_id: manifest.external_id,
       game_launcher: manifest.game_launcher,
+      cover_path: coverFromScan(manifest),
     });
     return groups;
   }, {});
@@ -186,7 +188,7 @@ function buildGamePayload(game) {
   return {
     name: game.name || game.title || 'Unknown Game',
     exe_path: game.exe_path || game.path || game.launch_target || null,
-    cover_path: game.cover_path || game.cover || null,
+    cover_path: coverFromScan(game),
     tags: JSON.stringify(tags),
   };
 }
