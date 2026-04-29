@@ -30,7 +30,7 @@ export default function PointsShopPage() {
       <div className="flex items-start justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold">Points Shop</h1>
-          <p className="text-zinc-400 mt-1">Buy stuff, ka-ching, lil' skrrt, then we done, yeah?</p>
+          <p className="text-zinc-400 mt-1">Spend points on profile items and colour themes.</p>
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -90,7 +90,7 @@ export default function PointsShopPage() {
 
       <ShopSection title="Profile Backgrounds">
         <div className="card flex items-center justify-center py-10 px-16 shrink-0 text-zinc-600 text-sm">
-          Coming soon
+          Not available in this build
         </div>
       </ShopSection>
 

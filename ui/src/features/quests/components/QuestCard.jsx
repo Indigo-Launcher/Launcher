@@ -1,6 +1,7 @@
 export default function QuestCard({ quest, completed = false }) {
   const progressPercent = Math.min((quest.progress / quest.goal) * 100, 100);
   const IconComponent = quest.Icon;
+  const showDescription = quest.description && quest.description !== quest.title;
 
   return (
     <div
@@ -24,7 +25,7 @@ export default function QuestCard({ quest, completed = false }) {
         <p className={`text-sm font-medium ${completed ? 'text-green-400' : 'text-white'}`}>
           {quest.title}
         </p>
-        <p className="mt-0.5 text-xs text-zinc-500">{quest.description}</p>
+        {showDescription && <p className="mt-0.5 text-xs text-zinc-500">{quest.description}</p>}
         {completed ? (
           <div className="mt-2 h-1 rounded-full bg-green-500" />
         ) : (
