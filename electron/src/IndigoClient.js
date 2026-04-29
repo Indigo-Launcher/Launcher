@@ -16,6 +16,9 @@ const GameLauncher = require('./structures/interfaces/GameLauncher');
 const SteamLauncher = require("./launchers/SteamLauncher");
 const EpicGamesLauncher = require("./launchers/EpicGamesLauncher");
 const fs = require("node:fs/promises");
+const { shell } = require('electron');
+const { spawn } = require('node:child_process');
+const { buildLauncherUrl, isUrlTarget } = require('./launchTarget');
 
 /**
  * A class which represents the indigo client.
@@ -67,8 +70,8 @@ class IndigoClient {
         // needs ipcMain.handle (not on) so the result actually comes back to the renderer
         ipcMain.handle('supported-launchers', () => this.supportedLaunchers());
         ipcMain.handle('scan', (event, requestedLaunchers) => this.scan(requestedLaunchers));
-        ipcMain.on('import', (event, apps) => this.importPending(apps));
-        ipcMain.on('launch-app', (event, appId) => this.launchApp(appId));
+        ipcMain.handle('import', (event, apps) => this.importPending(apps));
+        ipcMain.handle('launch-app', (event, target) => this.launchApp(target));
 
         // Create the browser window
         this._createWindow();
@@ -124,37 +127,71 @@ class IndigoClient {
         // Return a partial manifest so the frontend can display options
         return [...this.pendingApps.values()].map(manifest => {
             return {
+                app_id: manifest['AppId'],
+                external_id: manifest['ExternalId'],
                 display_name: manifest['DisplayName'],
-                game_launcher: manifest['GameLauncher']
+                game_launcher: manifest['GameLauncher'],
+                launch_target: buildLauncherUrl(manifest),
             }
         });
     }
 
-    async saveManifest(appId) {
-        // const manifest = this.pendingApps.get(appId);
-        //
-        // // Return error if the manifest doesnt exist
-        // if (!manifest) return {
-        //     status: 'APP_NOT_FOUND',
-        //     description: 'The requested app manifest could not be found.'
-        // };
-        //
-        // // Attempt the write the manifest
-        // await fs.writeFile(path.join(this.manifestDir, `app_${manifest.AppId}.manifest`), JSON.stringify(manifest, null, 2), 'utf8');
-        // console.log(`Saved ${manifest['AppId']}`);
+    async saveManifest(manifest) {
+        if (!manifest) return false;
+
+        await fs.writeFile(
+            path.join(this.manifestDir, `app_${manifest.AppId}.manifest`),
+            JSON.stringify(manifest, null, 2),
+            'utf8'
+        );
+        return true;
     }
 
-    importPending(apps) {
+    async importPending(apps) {
+        const ids = new Set(Array.isArray(apps) ? apps : []);
+        const selected = this.pendingApps.filter((manifest) => ids.has(manifest.AppId));
 
+        await Promise.all(selected.map((manifest) => this.saveManifest(manifest)));
+        this.pendingApps = this.pendingApps.filter((manifest) => !ids.has(manifest.AppId));
+
+        return { ok: true, imported: selected.length };
     }
 
     /**
-     * Launch a specified app by its id.
+     * Launch a saved app target.
      *
-     * @param {string} appId the internal app id
+     * @param {string} target exe path or launcher URL
      */
-    launchApp(appId) {
+    async launchApp(target) {
+        if (!target) {
+            return { ok: false, message: 'No launch target saved for this game yet' };
+        }
 
+        try {
+            if (isUrlTarget(target)) {
+                await shell.openExternal(target);
+                return { ok: true };
+            }
+
+            // openPath is nice for documents, but spawn gives us the process so
+            // playtime tracking can hook into close later.
+            await new Promise((resolve, reject) => {
+                const child = spawn(target, [], {
+                    detached: true,
+                    stdio: 'ignore',
+                });
+
+                child.once('spawn', () => {
+                    child.unref();
+                    resolve();
+                });
+                child.once('error', reject);
+            });
+
+            return { ok: true };
+        } catch (err) {
+            return { ok: false, message: err.message || 'Could not launch game' };
+        }
     }
 
     /**

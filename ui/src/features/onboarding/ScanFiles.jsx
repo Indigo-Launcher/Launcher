@@ -8,8 +8,16 @@ function getGameKeys(scannedGames) {
   if (!scannedGames) return [];
 
   return Object.entries(scannedGames).flatMap(([platform, games]) =>
-    games.map((game) => `${platform}:${game}`)
+    games.map((game) => `${platform}:${getScannedGameName(game)}`)
   );
+}
+
+function getScannedGameName(game) {
+  return typeof game === 'string' ? game : game.name;
+}
+
+function getScannedLaunchTarget(game) {
+  return typeof game === 'string' ? null : game.launch_target;
 }
 
 export default function ScanFiles() {
@@ -51,7 +59,8 @@ export default function ScanFiles() {
     const gamesToImport = allGames
       .filter((entry) => selectedGames.includes(entry.key))
       .map((entry) => ({
-        name: entry.game,
+        name: getScannedGameName(entry.game),
+        launch_target: getScannedLaunchTarget(entry.game),
         platform: entry.platform,
         store: entry.platform,
         genre: 'Unknown',
@@ -74,7 +83,11 @@ export default function ScanFiles() {
   if (scannedGames) {
     const platforms = Object.entries(scannedGames);
     const allGames = platforms.flatMap(([platform, games]) =>
-      games.map((game) => ({ platform, game, key: `${platform}:${game}` }))
+      games.map((game) => ({
+        platform,
+        game,
+        key: `${platform}:${getScannedGameName(game)}`,
+      }))
     );
 
     return (
@@ -96,22 +109,26 @@ export default function ScanFiles() {
               >
                 <p className="mb-3 text-sm font-semibold text-white">{platform}:</p>
                 <div className="flex flex-col gap-2">
-                  {games.map((game) => (
-                    <label
-                      key={game}
-                      className="group flex cursor-pointer items-center justify-between gap-2"
-                    >
-                      <span className="flex items-center gap-1.5 text-xs text-zinc-300">
-                        <span className="text-zinc-600">-</span> {game}
-                      </span>
-                      <input
-                        type="checkbox"
-                        checked={selectedGames.includes(`${platform}:${game}`)}
-                        onChange={() => toggleGame(`${platform}:${game}`)}
-                        className="h-4 w-4 cursor-pointer rounded accent-[var(--color-primary)]"
-                      />
-                    </label>
-                  ))}
+                  {games.map((game) => {
+                    const gameName = getScannedGameName(game);
+
+                    return (
+                      <label
+                        key={gameName}
+                        className="group flex cursor-pointer items-center justify-between gap-2"
+                      >
+                        <span className="flex items-center gap-1.5 text-xs text-zinc-300">
+                          <span className="text-zinc-600">-</span> {gameName}
+                        </span>
+                        <input
+                          type="checkbox"
+                          checked={selectedGames.includes(`${platform}:${gameName}`)}
+                          onChange={() => toggleGame(`${platform}:${gameName}`)}
+                          className="h-4 w-4 cursor-pointer rounded accent-[var(--color-primary)]"
+                        />
+                      </label>
+                    );
+                  })}
                 </div>
               </div>
             ))}

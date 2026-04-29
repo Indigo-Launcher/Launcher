@@ -18,8 +18,10 @@ export default function HomePage() {
     genreFilters: availableGenres,
     storeFilters: availableStores,
     addGame,
+    launchGame,
     searchGameMetadata,
   } = useLibraryData();
+  const [launchError, setLaunchError] = useState('');
   const {
     search,
     setSearch,
@@ -38,6 +40,15 @@ export default function HomePage() {
   } = useHomeFilters(games);
 
   const sortLabel = sortOptions.find((option) => option.value === sortValue)?.label;
+
+  async function handleLaunch(game) {
+    setLaunchError('');
+    try {
+      await launchGame(game);
+    } catch (err) {
+      setLaunchError(err.message || 'Could not launch game');
+    }
+  }
 
   return (
     <div className="text-white">
@@ -125,6 +136,7 @@ export default function HomePage() {
 
       <div className="flex items-start gap-6">
         <div className="flex-1">
+          {launchError && <p className="mb-3 text-sm text-red-400">{launchError}</p>}
           {filteredGames.length === 0 ? (
             <div className="mt-24 flex flex-col items-center justify-center text-center">
               <p className="text-lg font-medium text-zinc-500">No games here yet</p>
@@ -135,7 +147,7 @@ export default function HomePage() {
           ) : (
             <div className="grid grid-cols-6 gap-4">
               {filteredGames.map((game) => (
-                <LibraryCard key={game.id} {...game} />
+                <LibraryCard key={game.id} {...game} onPlay={() => handleLaunch(game)} />
               ))}
             </div>
           )}

@@ -27,11 +27,11 @@ contextBridge.exposeInMainWorld('api', {
    *
    * @param apps
    */
-  import: (apps) => ipcRenderer.send('import', apps),
+  import: (apps) => ipcRenderer.invoke('import', apps),
   /**
-   * Launch an app by its internal identifier.
+   * Launch an app by its saved target.
    *
-   * @param {string} id the unique internal identifier for the app
+   * @param {string} target exe path or launcher URL
    */
-  launchApp: (id) => ipcRenderer.send('launch-app', id),
+  launchApp: (target) => ipcRenderer.invoke('launch-app', target),
 });

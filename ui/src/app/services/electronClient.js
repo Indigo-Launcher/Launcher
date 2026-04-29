@@ -32,5 +32,8 @@ export const electronClient = {
   supportedLaunchers: makeSafeCall('supportedLaunchers', []),
   scan: makeSafeCall('scan', null),
   importApps: makeSafeCall('import', null),
-  launchApp: makeSafeCall('launchApp', null),
+  launchApp: makeSafeCall('launchApp', {
+    ok: false,
+    message: 'Could not reach the Electron launch handler. Restart the app and try again.',
+  }),
 };

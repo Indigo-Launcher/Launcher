@@ -98,6 +98,7 @@ function normalizeGame(g) {
     installed: true, // if it's in the library it's installed as far as the UI cares
     cover: g.cover_path || null,
     last_played: g.last_played || null,
+    launchTarget: g.exe_path || null,
   };
 }
 
@@ -140,7 +141,13 @@ function groupScannedGames(manifests) {
   return manifests.reduce((groups, manifest) => {
     const platform = SCAN_LABELS[manifest.game_launcher] || manifest.game_launcher || 'Imported';
     if (!groups[platform]) groups[platform] = [];
-    groups[platform].push(manifest.display_name || 'Unknown Game');
+    groups[platform].push({
+      name: manifest.display_name || 'Unknown Game',
+      launch_target: manifest.launch_target || null,
+      app_id: manifest.app_id,
+      external_id: manifest.external_id,
+      game_launcher: manifest.game_launcher,
+    });
     return groups;
   }, {});
 }
@@ -178,7 +185,7 @@ function buildGamePayload(game) {
 
   return {
     name: game.name || game.title || 'Unknown Game',
-    exe_path: game.exe_path || game.path || null,
+    exe_path: game.exe_path || game.path || game.launch_target || null,
     cover_path: game.cover_path || game.cover || null,
     tags: JSON.stringify(tags),
   };
@@ -306,6 +313,14 @@ export function AppDataProvider({ children }) {
       return searchIgdb(token, name);
     }
 
+    async function launchGame(game) {
+      const result = await electronClient.launchApp(game.launchTarget);
+      if (!result || result.ok === false) {
+        throw new Error(result?.message || 'Could not launch game');
+      }
+      return result;
+    }
+
     function toggleConnection(id) {
       setConnections((current) => {
         const next = { ...current, [id]: !current[id] };
@@ -379,6 +394,7 @@ export function AppDataProvider({ children }) {
         storeFilters: STORE_FILTERS,
         addGame,
         importScannedGames,
+        launchGame,
         refreshLibrary,
         searchGameMetadata,
       },
