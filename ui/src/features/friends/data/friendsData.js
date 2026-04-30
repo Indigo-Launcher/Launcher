@@ -1,22 +1,22 @@
 export const onlineFriends = [
-  { id: 'nova', name: 'Nova', username: '@nova', status: 'online' },
-  { id: 'miles', name: 'Miles', username: '@miles', status: 'online' },
-  { id: 'atlas', name: 'Atlas', username: '@atlas', status: 'away' },
-  { id: 'ivy', name: 'Ivy', username: '@ivy', status: 'online' },
-  { id: 'rhea', name: 'Rhea', username: '@rhea', status: 'busy' },
+  { id: 'umer', name: 'Umer', username: '@umer', status: 'online' },
+  { id: 'noah', name: 'Noah', username: '@noah', status: 'online' },
+  { id: 'edward', name: 'Edward', username: '@edward', status: 'away' },
+  { id: 'sandesh', name: 'Sandesh', username: '@sandesh', status: 'online' },
+  { id: 'fasee', name: 'Fasee', username: '@fasee', status: 'busy' },
 ];
 
 export const offlineFriends = [
-  { id: 'kai', name: 'Kai', username: '@kai', status: 'offline' },
-  { id: 'lena', name: 'Lena', username: '@lena', status: 'offline' },
-  { id: 'dante', name: 'Dante', username: '@dante', status: 'offline' },
-  { id: 'sora', name: 'Sora', username: '@sora', status: 'offline' },
+  { id: 'jerry', name: 'Jerry', username: '@jerry', status: 'offline' },
+  { id: 'shahzaib', name: 'Shahzaib', username: '@shahzaib', status: 'offline' },
+  { id: 'hayyan', name: 'Hayyan', username: '@hayyan', status: 'offline' },
+  { id: 'miles', name: 'Miles', username: '@miles', status: 'offline' },
 ];
 
 export const chats = [
-  { id: 'nova', name: 'Nova', status: 'online' },
-  { id: 'atlas', name: 'Atlas', status: 'away' },
-  { id: 'kai', name: 'Kai', status: 'offline' },
+  { id: 'umer', name: 'Umer', status: 'online' },
+  { id: 'edward', name: 'Edward', status: 'away' },
+  { id: 'jerry', name: 'Jerry', status: 'offline' },
 ];
 
 export const groupChats = [
